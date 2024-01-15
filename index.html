@@ -9,16 +9,43 @@
 </head>
 
 <body>
-    <h1 class="header">SunSide Holiday</h1>
-    <img src="./assests/images/Book Now.png">
+    <!--Image as our title-->
+    <img class="image" src="./assests/images/Home.png">
+    <!--Navigation Bar/ AKA Menu Bar-->
     <nav class="navbar">
         <ul>
             <li><a href="#flights">Flights</a></li>
-            <li><a href="#manageflights">Manage Flights</a><li>
-            <li><a href="#weather">Weather Updates</a></li>
-
+            <li><a href="#weatherCheckin">Weather CheckIn</a></li>
+            <li><a href="#destination">Destination</a></li>
         </ul>
     </nav>
-    <section class="flights"></section>
-    <section class="manageFlights"></section>
-    <section class="weather"></section>
+    <!--Section 1 - The flights. Forms for Departure Airport, Arrival Airport, Flight Numbe -->
+    <section class="flight">
+        <h1>Flight Information</h1>
+        <form action="#" method="post">
+            <label for="departureAirport">Departure Airport:</label>
+            <input type="text" id="departureAirport" name="departureAirport" required>
+
+            <label for="arrivalAirport">Arrival Airport:</label>
+            <input type="text" id="arrivalAirport" name="arrivalAirport" required>
+
+            <label for="flightNumber">Flight Number:</label>
+            <input type="text" id="flightNumber" name="flightNumber" required>
+
+            <input type="submit" value="Continue">
+        </form>
+    </section>
+    <!--Section 2 - Weather Information -->
+    <section class="weatherCheckin"></section>
+
+    <!--Section 3 - Previous Destination, using local storage-->
+    <section class="destination"></section>
+
+<!--Footer -->
+    <footer class="footer">
+        <h2>SunSide Holiday</h2>
+    </footer>
+    </main>
+</body>
+
+</html>

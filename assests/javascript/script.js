@@ -13,7 +13,8 @@ var storageKey = 'sunny-side-holiday';
 //input - Click from the user
 //output - call the next function down
 SubmitbuttonEL.on('submit', function () {
-    setLocalStorage(userData);
+   
+   StoreFormToLocalStorage(formData);
 });
 
 // Funtion for the flight data and fetch informaion and display information in HTML - mark
@@ -33,7 +34,7 @@ SubmitbuttonEL.on('submit', function () {
 // Function storage previous Destination  - Mark
 //input -  the users input 
 //output - Saves it in Local Storage 
-function StoreToLocalStorage(usrData) {
+function StoreFormToLocalStorage(usrData) {
     localStorage.setItem(storageKey, userData);
 }
 

@@ -1,5 +1,5 @@
 //Html elements
-SubmitbuttonEL = $('#');
+SubmitbuttonEL = $('#userFlightInfo');
 FlightInforEL = $('.flight')
 
 
@@ -13,8 +13,21 @@ var storageKey = 'sunny-side-holiday';
 //event listener for submit button - Mark
 //input - Click from the user
 //output - call the next function down
-SubmitbuttonEL.on('submit', function (event) {
+SubmitbuttonEL.on("submit", function (event) {
     event.preventDefault();
+    var formData = {};
+    for(var i=0;i<event.currentTarget.length;i++)
+    {
+        console.log(event.currentTarget[i].id);
+        var id = event.currentTarget[i].id; //get id of each form element
+        if(id != "" && id!== undefined && id !== null)
+        {
+            var elementData=$('#'+id).val(); //get element data from form
+            formData[id]=elementData; //add to the form data object
+        }
+    }
+
+   // console.log(event);
    StoreFormToLocalStorage(formData);
    FlightInforEL.hide();
 });
@@ -37,7 +50,21 @@ SubmitbuttonEL.on('submit', function (event) {
 //input -  the users input 
 //output - Saves it in Local Storage 
 function StoreFormToLocalStorage(usrData) {
-    localStorage.setItem(storageKey, userData);
+    var existingUserData = JSON.parse(localStorage.getItem(storageKey));
+    if(existingUserData === undefined || existingUserData === null)
+    {
+        var existingUserData= {};
+    }
+    for(var i in usrData)
+    {
+        if(existingUserData[i]=== undefined || existingUserData[i] === null) //if no data already exisits
+        {
+            var tempArr = []; 
+            existingUserData[i] = tempArr; //create array
+        }
+        existingUserData[i].push(usrData[i]); //store new value to end of array
+    }
+    localStorage.setItem(storageKey, JSON.stringify(existingUserData)); //send storage object to local storage
 }
 
 // Function display previous Destination  - Mark

@@ -13,8 +13,8 @@ var storageKey = 'sunny-side-holiday';
 //event listener for submit button - Mark
 //input - Click from the user
 //output - call the next function down
-SubmitbuttonEL.on('submit', function () {
-   
+SubmitbuttonEL.on('submit', function (event) {
+    event.preventDefault();
    StoreFormToLocalStorage(formData);
    FlightInforEL.hide();
 });

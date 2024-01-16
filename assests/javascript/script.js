@@ -1,5 +1,6 @@
 //Html elements
 SubmitbuttonEL = $('#');
+FlightInforEL = $('.flight')
 
 
 //Global Verables
@@ -15,6 +16,7 @@ var storageKey = 'sunny-side-holiday';
 SubmitbuttonEL.on('submit', function () {
    
    StoreFormToLocalStorage(formData);
+   FlightInforEL.hide();
 });
 
 // Funtion for the flight data and fetch informaion and display information in HTML - mark

@@ -72,8 +72,15 @@ function StoreFormToLocalStorage(usrData) {
 //output - Users previous input of the (departure and arrival airport / flight number) (Display)
 function getFromLocalStorage() {
     var userData = JSON.parse(localStorage.getItem(storageKey));
+    for(var i in userData)
+    {
+        $('#'+i).attr('value',(userData[i][userData[i].length-1])); //update each element with last stored information 
+    }
+
     return userData;
 }
+
+getFromLocalStorage() ;
 
 var TestData_Flights = {
 

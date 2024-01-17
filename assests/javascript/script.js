@@ -5,10 +5,48 @@ FlightInforEL = $('.flight')
 
 //Global Verables
 var storageKey = 'sunny-side-holiday';
+var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a';
 
 // Fetch  flight data from the API - Michael
 // input - Api data
 // output - data for our function FlightData / HTML(Form)
+function apifetch_FlightData(userData) {
+    var apiUrl = 'http://api.aviationstack.com/v1/flights?access_key='+flightAPIkey;
+
+    fetch(apiUrl,{mode:"no-cors"})
+        .then(function (response) {
+            if (response.ok) {
+                response.json().then(function (data) {
+                    console.log(data); //display weather datat on page
+                });
+            } else {
+                alert('Error: ' + response.statusText);
+            }
+        })
+        .catch(function (error) {
+            alert('Unable to connect to https://api.open-meteo.com');
+        });
+}
+
+//fetch airport data - includes lats and longs of airport -/could also use (citties endpoint) *******************************could use with form data to autocomplete?
+function apifetch_AirportData(userData) {
+    var apiUrl = 'http://api.aviationstack.com/v1/airports?access_key='+flightAPIkey;
+
+    fetch(apiUrl)
+        .then(function (response) {
+            if (response.ok) {
+                response.json().then(function (data) {
+                    console.log(data); //display weather datat on page
+                });
+            } else {
+                alert('Error: ' + response.statusText);
+            }
+        })
+        .catch(function (error) {
+            alert('Unable to connect to https://api.open-meteo.com');
+        });
+}
+
 
 //event listener for submit button - Mark
 //input - Click from the user
@@ -56,8 +94,6 @@ function apifetch_WeatherData(location) {
             alert('Unable to connect to https://api.open-meteo.com');
         });
 }
-
-
 // Function for forcast - Mark
 //input -  Current Day Weather AKA The data information Current weather.
 //output - Future 5 days  forcast 
@@ -98,9 +134,6 @@ function getFromLocalStorage() {
 }
 
 getFromLocalStorage() ;
-apifetch_WeatherData();
-
-var TestData_Flights = {
-
-
-};
+var weatherData = apifetch_WeatherData();
+var flightData = apifetch_FlightData();
+//var airportData = apifetch_AirportData();

@@ -13,7 +13,7 @@ var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a';
 function apifetch_FlightData(userData) {
     var apiUrl = 'http://api.aviationstack.com/v1/flights?access_key='+flightAPIkey;
 
-    fetch(apiUrl,{referrerPolicy: "strict-origin-when-cross-origin", redirect: "manual"})
+    fetch(apiUrl)
         .then(function (response) {
             if (response.ok) {
                 response.json().then(function (data) {

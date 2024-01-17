@@ -13,18 +13,18 @@ var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a';
 function apifetch_FlightData(userData) {
     var apiUrl = 'http://api.aviationstack.com/v1/flights?access_key='+flightAPIkey;
 
-    fetch(apiUrl,{mode:"no-cors"})
+    fetch(apiUrl,{referrerPolicy: "strict-origin-when-cross-origin", redirect: "manual"})
         .then(function (response) {
             if (response.ok) {
                 response.json().then(function (data) {
                     console.log(data); //display weather datat on page
                 });
             } else {
-                alert('Error: ' + response.statusText);
+                console.log('Error: ' + response.statusText);
             }
         })
         .catch(function (error) {
-            alert('Unable to connect to https://api.open-meteo.com');
+            console.log('Unable to connect to aviationstack.com');
         });
 }
 
@@ -39,11 +39,11 @@ function apifetch_AirportData(userData) {
                     console.log(data); //display weather datat on page
                 });
             } else {
-                alert('Error: ' + response.statusText);
+                console.log('Error: ' + response.statusText);
             }
         })
         .catch(function (error) {
-            alert('Unable to connect to https://api.open-meteo.com');
+            console.log('Unable to connect to aviationstack.com');
         });
 }
 
@@ -87,11 +87,11 @@ function apifetch_WeatherData(location) {
                     console.log(data); //display weather datat on page
                 });
             } else {
-                alert('Error: ' + response.statusText);
+                console.log('Error: ' + response.statusText);
             }
         })
         .catch(function (error) {
-            alert('Unable to connect to https://api.open-meteo.com');
+            console.log('Unable to connect to https://api.open-meteo.com');
         });
 }
 // Function for forcast - Mark

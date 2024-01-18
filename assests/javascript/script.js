@@ -91,9 +91,16 @@ var TestData_Weather1 = {
 //function to convert a generic (structured) javascript object to a html block
 //Arrays become rows and object keys become collums
 //html layout inspiration https://css-tricks.com/accessible-simple-responsive-tables/
-/*
-    ObjectArr = [ob1, obj2, obj3]
+/*INPUTS
+    ObjectArr = [ob1, obj2, obj3];
+    htmlSelector = jquery html selector;
+    tableColHeadings = Array of Ordered Column Heading Strings ['col1', 'col2', 'col3' ]
+        - (optional) - if blank will render all object 'key's to table 
+        - the output will be sorted by this arr
+        - only headings listed will be displayed.
+        - must be direct match to object 'key's 
 
+ OUTPUT   
                     col1        col2        col3\
                     obj[key1]   obj[key2]   obj[key1]
     row1    obj1  |           |           |             |  
@@ -101,40 +108,70 @@ var TestData_Weather1 = {
     row3    obj3  |           |           |             |  
 */
 
-jsObject2HtmlTable(TestData_Weather1, '.weatherCheckin');
-function jsObject2HtmlTable(ObjectArr, htmlSelector) {
-    var htmlElement = $(htmlSelector); //get Jquery object for final HTML Object
+jsObject2HtmlTable([TestData_Weather1,TestData_Weather1,TestData_Weather1,TestData_Weather1], '.weatherCheckin');
+function jsObject2HtmlTable(ObjectArr, htmlSelector, tableColHeadingsArr) {
+    var HtmlElement = $(htmlSelector); //get Jquery object for final HTML Object
+    HtmlElement.empty(); //clear any exisiting data in html ELEMENT
     var tempHtmlElement = $('<table></table>').attr('id', 'JsObjectTable'); //create Table element
-    if(typeof ObjectArr !== Array) //check if the pass arr is actually and array
+    if (!$.isArray(ObjectArr)) //check if the pass arr is actually and array
     {
         ObjectArr = [ObjectArr]; //if not creat array and insert the obj
     }
-    var colNames = []; //list of column headings
-    for (var ObjectIndex = 0; ObjectIndex < ObjectArr.length; ObjectIndex++) //for each item in ObjectArr
-     {
-        //create row element
-        var row = $('<tr></tr>').attr('id','table-data-row-'+ObjectIndex);
-        //row header column
-        colNames.push('Items'); //add tilte element
-        var col = $('<td></td>').text(ObjectIndex+1); //add first column to row
-        col.addClass('table-row-heading');//add class for formatting
-        row.append(col);//apend column to row
-        for (var colIndex in ObjectArr[ObjectIndex]) 
+    //get Table Headings
+    if (!tableColHeadingsArr) {
+        var tableColHeadingsArr = [];
+        for (var ObjectIndex = 0; ObjectIndex < ObjectArr.length; ObjectIndex++) //for each item in ObjectArr
         {
-            colNames.push(colIndex); //add column heading to colName Array
-            var col = $('<td></td>').text(ObjectArr[ObjectIndex][colIndex]); //add data to cell
-            row.append(col); //append cell to row
+            for (var colIndex in ObjectArr[ObjectIndex]) {
+                if (!tableColHeadingsArr.includes(colIndex)) //if heading already exisits in array
+                {
+                    tableColHeadingsArr.push(colIndex); //add column heading to colName Array
+                }
+            }
         }
-        tempHtmlElement.append(row);//apend current row to  new html element
     }
+    tableColHeadingsArr.unshift('Items'); //add title collumn heading
     //add in table headings
-    var headingsRow = $('<tr></tr>').attr('id','table-header-row'); //create temp heading element
-    for(var i = 0 ; i<colNames.length;i++) //for each item in column headings array
+    var headingsRow = $('<tr></tr>').attr('id', 'table-header-row'); //create temp heading element
+    for (var i = 0; i < tableColHeadingsArr.length; i++) //for each item in column headings array
     {
-        var headingsCol = $('<td></td>').text(colNames[i]); //create element and incert cell data
+        var headingsCol = $('<td></td>').text(tableColHeadingsArr[i]); //create element and incert cell data
         headingsCol.addClass('table-col-heading'); //add class for formatting
         headingsRow.append(headingsCol); //append to heading row element
     }
-    tempHtmlElement.prepend(headingsRow);//add heading row at first item in table.
-htmlElement.append(tempHtmlElement); //insert the new element into the html code
+    HtmlElement.prepend(headingsRow);//add heading row at first item in table.
+
+    //add data to table
+    for (var ObjectIndex = 0; ObjectIndex < ObjectArr.length; ObjectIndex++) //for each item in ObjectArr
+    {
+        var row = $('<tr></tr>').attr('id', 'table-data-row-' + ObjectIndex); //create row element
+
+
+
+        for (var colIndex = 0; colIndex < tableColHeadingsArr.length; colIndex++) { //start at #1 because its alreeady been handled
+            if (colIndex == 0) {
+                //row header column
+                var col = $('<td></td>').text(ObjectIndex + 1); //add first column to row
+                col.addClass('table-row-heading');//add class for formatting
+                row.append(col);//apend column to row
+            }
+            else {
+                var cellValue = '';
+                var col = $('<td></td>'); //add data to cell
+                try {
+                    cellValue = ObjectArr[ObjectIndex][tableColHeadingsArr[colIndex]];
+                    if (cellValue === undefined) { cellValue = 'N/A'; }
+                }
+                catch
+                {
+                    cellValue = 'N/A';
+                }
+                col.text(cellValue);
+                row.append(col); //append cell to row
+            }
+        }
+        tempHtmlElement.append(row);//apend current row to  new html element
+    }
+
+    HtmlElement.append(tempHtmlElement); //insert the new element into the html code
 };

@@ -2,14 +2,11 @@
 SubmitbuttonEL = $('#userFlightInfo');
 FlightInforEL = $('.flight')
 WeatherDataOutputEL = $("#js-weatherData");
-
+FlightDataOutputEL = $("#js-flightData");
 
 //Global Verables
 var storageKey = 'sunny-side-holiday';
 
-// Fetch  flight data from the API - Michael
-// input - Api data
-// output - data for our function FlightData / HTML(Form)
 
 //event listener for submit button - Mark
 //input - Click from the user
@@ -34,6 +31,79 @@ SubmitbuttonEL.on("submit", function (event) {
 // Funtion for the flight data and fetch informaion and display information in HTML - mark
 //input - user input (departure and arrival airport / flight number) (dates) 
 //output - The data information fligth information, status  (HTML Display as outputs) 
+
+// Fetch  flight data from the API - Michael
+// input - Api data
+// output - data for our function FlightData / HTML(Form)
+
+
+
+getfetch_FlightData();
+getfetch_AirportData();
+
+// Fetch  flight data from the API - Michael
+// input - Api data
+// output - data for our function FlightData / HTML(Form)
+    
+function getfetch_FlightData() {
+    
+    var flightAPIkey = '401308e98c0676bc5feb0cea81599270'; //pranita
+    var flightAPIkey = 'b01483a314379d1ea7402d0138aff2fa'; //mark
+    var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a'; //faiza
+
+        var apiUrl = 'http://api.aviationstack.com/v1/flights?access_key=' + flightAPIkey;
+
+        $.ajax({
+            url: 'http://api.aviationstack.com/v1/flights',
+            data: {
+              access_key: flightAPIkey
+            },
+            dataType: 'json',
+            success: function(apiResponse) {
+              console.log(apiResponse)
+              jsObject2HtmlTable(apiResponse,FlightInforEL)
+                if (Array.isArray(apiResponse['results'])) {
+                apiResponse['results'].forEach(flight => {
+                  if (!flight['live']['is_ground']) {
+                    console.log(`${flight['airline']['name']} flight ${flight['flight']['iata']}`,
+                        `from ${flight['departure']['airport']} (${flight['departure']['iata']})`,
+                        `to ${flight['arrival']['airport']} (${flight['arrival']['iata']}) is in the air.`);
+                  }
+                });
+              }
+            }
+          });
+  }
+
+  function getfetch_AirportData() {
+    
+    var flightAPIkey = '401308e98c0676bc5feb0cea81599270'; //pranita
+    var flightAPIkey = 'b01483a314379d1ea7402d0138aff2fa'; //mark
+    var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a'; //faiza
+
+       // var apiUrl = 'http://api.aviationstack.com/v1/airports?access_key=' + flightAPIkey;
+
+        $.ajax({
+            url: 'http://api.aviationstack.com/v1/airports',
+            data: {
+              access_key: flightAPIkey
+            },
+            dataType: 'json',
+            success: function(apiResponse) {
+              console.log(apiResponse)
+              //jsObject2HtmlTable(apiResponse,FlightInforEL)
+                if (Array.isArray(apiResponse['results'])) {
+                apiResponse['results'].forEach(flight => {
+                  if (!flight['live']['is_ground']) {
+                    console.log(`${flight['airline']['name']} flight ${flight['flight']['iata']}`,
+                        `from ${flight['departure']['airport']} (${flight['departure']['iata']})`,
+                        `to ${flight['arrival']['airport']} (${flight['arrival']['iata']}) is in the air.`);
+                  }
+                });
+              }
+            }
+          });
+  }
 
 // Fetch  Weather data from the API 
 //input - user input (arrival airport / flight number) (dates) 

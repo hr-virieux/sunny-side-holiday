@@ -9,6 +9,46 @@ var storageKey = 'sunny-side-holiday';
 // Fetch  flight data from the API - Michael
 // input - Api data
 // output - data for our function FlightData / HTML(Form)
+function apifetch_FlightData(location) {
+    var apiUrl = 'https://priceline-com.p.rapidapi.com/flights/LAX/SFO/2021-02-17?adults=1';
+    var options = {
+        method: 'GET',
+        headers: {
+            'X-RapidAPI-Key': '856f8a93d2mshfa1397205115203p174427jsn8fc6817a3758',
+            'X-RapidAPI-Host': 'priceline-com.p.rapidapi.com'
+        }
+    };
+
+    fetch(apiUrl,options)
+        .then(function (response) {
+            if (response.ok) {
+                response.json().then(function (data) {
+                    console.log(data); //display weather datat on page
+                });
+            } else {
+                console.log('Error: ' + response.statusText);
+            }
+        })
+        .catch(function (error) {
+            console.log('Unable to connect to https://api.open-meteo.com');
+        });
+}/*
+const url = 'https://priceline-com.p.rapidapi.com/cars/location/search?q=Seattle';
+const options = {
+	method: 'GET',
+	headers: {
+		'X-RapidAPI-Key': '856f8a93d2mshfa1397205115203p174427jsn8fc6817a3758',
+		'X-RapidAPI-Host': 'priceline-com.p.rapidapi.com'
+	}
+};
+
+try {
+	const response = await fetch(url, options);
+	const result = await response.text();
+	console.log(result);
+} catch (error) {
+	console.error(error);
+}*/
 
 //event listener for submit button - Mark
 //input - Click from the user
@@ -93,6 +133,7 @@ function getFromLocalStorage() {
 
 getFromLocalStorage();
 var weatherData = apifetch_WeatherData();
+var flightData = apifetch_FlightData();
 
 
 

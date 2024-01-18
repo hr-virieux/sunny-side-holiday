@@ -135,5 +135,6 @@ function getFromLocalStorage() {
 
 getFromLocalStorage() ;
 var weatherData = apifetch_WeatherData();
-var flightData = apifetch_FlightData();
+//not currently working 
+//var flightData = apifetch_FlightData();
 //var airportData = apifetch_AirportData();

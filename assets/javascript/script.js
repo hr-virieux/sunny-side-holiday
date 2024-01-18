@@ -32,23 +32,8 @@ function apifetch_FlightData(location) {
         .catch(function (error) {
             console.log('Unable to connect to https://api.open-meteo.com');
         });
-}/*
-const url = 'https://priceline-com.p.rapidapi.com/cars/location/search?q=Seattle';
-const options = {
-	method: 'GET',
-	headers: {
-		'X-RapidAPI-Key': '856f8a93d2mshfa1397205115203p174427jsn8fc6817a3758',
-		'X-RapidAPI-Host': 'priceline-com.p.rapidapi.com'
-	}
-};
+}
 
-try {
-	const response = await fetch(url, options);
-	const result = await response.text();
-	console.log(result);
-} catch (error) {
-	console.error(error);
-}*/
 
 //event listener for submit button - Mark
 //input - Click from the user

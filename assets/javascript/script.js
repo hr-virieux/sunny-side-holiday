@@ -39,6 +39,7 @@ SubmitbuttonEL.on("submit", function (event) {
 
 
 getfetch_FlightData();
+getfetch_AirportData();
 
 // Fetch  flight data from the API - Michael
 // input - Api data
@@ -51,20 +52,55 @@ function getfetch_FlightData() {
     var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a'; //faiza
 
         var apiUrl = 'http://api.aviationstack.com/v1/flights?access_key=' + flightAPIkey;
-        fetch(apiUrl).then(function(response) {
-          console.log(response);
-            if (response.ok) {
-              responseText.textContent = response.status;
-                    //display weather datat on page
-                }
-                return response.json();
-        }).then(function(data){
-          console.log('here');
-          console.log(data);
-          jsObject2HtmlTable(data,FlightDataOutputEL);
-        }).catch(function(error) {
-            console.log('Unable to connect to aviationstack.com');
-        });
+
+        $.ajax({
+            url: 'http://api.aviationstack.com/v1/flights',
+            data: {
+              access_key: flightAPIkey
+            },
+            dataType: 'json',
+            success: function(apiResponse) {
+              console.log(apiResponse)
+                if (Array.isArray(apiResponse['results'])) {
+                apiResponse['results'].forEach(flight => {
+                  if (!flight['live']['is_ground']) {
+                    console.log(`${flight['airline']['name']} flight ${flight['flight']['iata']}`,
+                        `from ${flight['departure']['airport']} (${flight['departure']['iata']})`,
+                        `to ${flight['arrival']['airport']} (${flight['arrival']['iata']}) is in the air.`);
+                  }
+                });
+              }
+            }
+          });
+  }
+
+  function getfetch_AirportData() {
+    
+    var flightAPIkey = '401308e98c0676bc5feb0cea81599270'; //pranita
+    var flightAPIkey = 'b01483a314379d1ea7402d0138aff2fa'; //mark
+    var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a'; //faiza
+
+       // var apiUrl = 'http://api.aviationstack.com/v1/airports?access_key=' + flightAPIkey;
+
+        $.ajax({
+            url: 'http://api.aviationstack.com/v1/airports',
+            data: {
+              access_key: flightAPIkey
+            },
+            dataType: 'json',
+            success: function(apiResponse) {
+              console.log(apiResponse)
+                if (Array.isArray(apiResponse['results'])) {
+                apiResponse['results'].forEach(flight => {
+                  if (!flight['live']['is_ground']) {
+                    console.log(`${flight['airline']['name']} flight ${flight['flight']['iata']}`,
+                        `from ${flight['departure']['airport']} (${flight['departure']['iata']})`,
+                        `to ${flight['arrival']['airport']} (${flight['arrival']['iata']}) is in the air.`);
+                  }
+                });
+              }
+            }
+          });
   }
 
 // Fetch  Weather data from the API 

@@ -101,27 +101,26 @@ var TestData_Weather1 = {
     row3    obj3  |           |           |             |  
 */
 
-jsObject2Html(TestData_Weather, '.weatherCheckin');
+jsObject2Html(TestData_Weather1, '.weatherCheckin');
 function jsObject2Html(MainObject, htmlSelector) {
     console.log(MainObject);
     var htmlElement = $(htmlSelector);
-    var tempHtmlElement = $('<div></div>').attr('id', 'JsObjectContainer');
-    for (var i in MainObject) {
-        var row1 = $('<div></div>').text(i);
-        if (typeof MainObject[i] == Object) { 
-
-        }
-        else if (typeof MainObject[i] == Array) {
-
-        }else
+    var tempHtmlElement = $('<table></table>').attr('id', 'JsObjectTable');
+    console.log(typeof MainObject);
+    if(typeof MainObject !== Array)
+    {
+        MainObject = [MainObject]; 
+    }
+    console.log(typeof MainObject);
+    for (var rowIndex = 0; rowIndex < MainObject.length; rowIndex++)
+     {
+        var row = $('<tr></tr>').text(colIndex);
+        for (var colIndex in MainObject[rowIndex]) 
         {
-            var row1 = $('<div></div>').text(i);
+            var col = $('<td></td>').text(colIndex);
+            row.append(col);
         }
-        tempHtmlElement.append(row1);
-
-
-    };
-
-
-    htmlElement.append(tempHtmlElement);
-}
+        tempHtmlElement.append(row);
+    }
+htmlElement.append(tempHtmlElement);
+};

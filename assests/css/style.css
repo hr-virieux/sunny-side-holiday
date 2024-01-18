@@ -1,4 +1,12 @@
-/* Changes to defalt settings*/
+:root {
+    --primary-color: #472a2a;
+    --hover-color: #795548;
+    --text-color: #333;
+    --background-color: white;
+    --font-size-large: 30px;
+}
+
+/* Resetting default settings */
 .navbar,
 .navbar ul,
 .navbar li,
@@ -7,11 +15,11 @@
     padding: 0;
     list-style: none;
     text-decoration: none;
-    font-size: 30px;
+    font-size: var(--font-size-large);
 }
 
 .navbar {
-    background-color: #472a2a;
+    background-color: var(--primary-color);
     padding: 10px;
     text-align: center;
 }
@@ -22,32 +30,30 @@
 }
 
 .navbar li {
-    margin-right: 100px;
+    margin: 0 50px; /* Even spacing for all nav items */
 }
 
-
 .navbar a {
-    color: #fff;
+    color: var(--background-color);
     font-weight: bold;
     text-transform: uppercase;
 }
 
-.navbar a:hover {
-    background-color: white;
-    color: #795548;
+.navbar a:hover, .navbar a:focus {
+    background-color: var(--background-color);
+    color: var(--hover-color);
 }
-
 
 img {
     width: 100%;
-    height: 30%;
+    height: auto;
     object-fit: cover;
 }
 
-/*Section 1 - form css  */
+/* Section 1 - Form styling */
 h1 {
     text-align: center;
-    color: #333;
+    color: var(--text-color);
 }
 
 form {
@@ -55,38 +61,35 @@ form {
     margin: 0 auto;
 }
 
-
 label {
     display: block;
     margin-top: 10px;
 }
 
-
-input[type="text"] {
+input[type="text"], input[type="submit"] {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
     box-sizing: border-box;
+    border-radius: 5px;
 }
 
+input[type="text"] {
+    border: 1px solid var(--primary-color);
+}
 
 input[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    box-sizing: border-box;
-    background-color: #472a2a;
-    color: white;
+    background-color: var(--primary-color);
+    color: var(--background-color);
     border: none;
-    border-radius: 5px;
     cursor: pointer;
 }
 
-input[type="submit"]:hover {
-    background-color: #795548;
+input[type="submit"]:hover, input[type="submit"]:focus {
+    background-color: var(--hover-color);
 }
 
-/*Footer */
+/* Footer styling */
 .footer {
     padding: 30px;
     clear: both;

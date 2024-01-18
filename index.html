@@ -5,54 +5,88 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>SunSide Holiday</title>
+    <!-- tailwind css cdn -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!--link to css file-->
     <link rel="stylesheet" href="./assests/css/style.css" />
 </head>
 
 <body>
-    <!--Image as our title-->
-    <img class="image" src="./assests/images/Home.png">
-    <!--Navigation Bar/ AKA Menu Bar-->
-    <nav class="navbar">
-        <ul>
-            <li><a href="#flights">Flights</a></li>
-            <li><a href="#weatherCheckin">Weather CheckIn</a></li>
-            <li><a href="#destination">Destination</a></li>
-        </ul>
-    </nav>
-    <!--Section 1 - The flights. Forms for Departure Airport, Arrival Airport, Flight Numbe -->
-    <section class="flight">
-        <h1>Flight Information</h1>
-        <form id="userFlightInfo" action="#" method="post">
-            <label for="departureAirport">Departure Airport:</label>
-            <input type="text" id="departureAirport" name="departureAirport" required>
+    <!-- main image -->
+    <header class="relative bg-cover bg-center" style="height: 50vh; background-image: url('./assests/images/Home.png');">
+        <div class="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-50" aria-label="Header Content">
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white">Sunny Side Holidays</h1>
+            <p class="text-lg md:text-xl lg:text-2xl text-white">Embark on the ultimate adventure with us as we tailor an unforgettable journey for your perfect holiday.</p>
+        </div>
+        
+        <!-- Navigation Bar -->
+        <nav aria-label="Main navigation" class="navbar">
+            <ul class="flex justify-between items-center w-full p-2.5">
+                <li class="flex-1 text-center">
+                    <a href="#flights" class="text-white text-2xl font-bold uppercase hover:text-[#795548]">Flights</a>
+                </li>
+                <li class="flex-1 text-center">
+                    <a href="#weatherCheckin" class="text-white text-2xl font-bold uppercase hover:text-[#795548]">Weather Check-In</a>
+                </li>
+                <li class="flex-1 text-center">
+                    <a href="#destination" class="text-white text-2xl font-bold uppercase hover:text-[#795548]">Destination</a>
+                </li>
+            </ul>
+        </nav>
+    </header>
 
-            <label for="arrivalAirport">Arrival Airport:</label>
-            <input type="text" id="arrivalAirport" name="arrivalAirport" required>
-
-            <label for="flightNumber">Flight Number:</label>
-            <input type="text" id="flightNumber" name="flightNumber">
-
-            <input type="submit" value="Continue">
+    <!--main section-->
+    <!-- section 1 - the flights. forms for departure airport, arrival airport, flight number -->
+    <section id="flights" class="text-center py-6">
+        <h1 class="text-3xl font-semibold text-[#333]">Flight Information</h1>
+        <form action="#" method="post" class="max-w-md mx-auto mt-4 space-y-4">
+            <div>
+                <label for="departureAirport" class="block text-sm font-medium">Departure Airport:</label>
+                <input type="text" id="departureAirport" name="departureAirport" required class="border border-gray-300 rounded p-2 w-full">
+            </div>
+    
+            <div>
+                <label for="arrivalAirport" class="block text-sm font-medium">Arrival Airport:</label>
+                <input type="text" id="arrivalAirport" name="arrivalAirport" required class="border border-gray-300 rounded p-2 w-full">
+            </div>
+    
+            <div>
+                <label for="flightNumber" class="block text-sm font-medium">Flight Number:</label>
+                <input type="text" id="flightNumber" name="flightNumber" class="border border-gray-300 rounded p-2 w-full">
+            </div>
+    
+            <div>
+                <input type="submit" value="Continue" class="bg-[#472a2a] text-white py-2 px-4 rounded w-full cursor-pointer hover:bg-[#795548]">
+            </div>
         </form>
     </section>
-    <!--Section 2 - Weather Information -->
-    <section class="weatherCheckin"></section>
-
-    <!--Section 3 - Previous Destination, using local storage-->
-    <section class="destination"></section>
     
+    <!-- section 2 - weather information -->
+    <section class="weatherCheckin">
+        <!-- weather information will be dynamically inserted here -->
+    </section>
+
+    <!-- section 3 - previous destination, using local storage -->
+    <section class="destination">
+        <!-- previous destinations will be dynamically inserted here -->
+    </section>
+
+    <!-- footer -->
+    <footer class="footer p-7.5 text-center">
+        <h2 class="text-xl">Sunny Side Holiday</h2>
+    </footer>
+
+
+
     <!--include jquery-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <!--include dayjs-->
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
-        integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
-    <script src="./assests/javascript/script.js"> </script>
+    integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
+    <!--link to javascript file-->
+    <script src="./assests/javascript/script.js"></script>
+
     
-<!--Footer -->
-    <footer class="footer">
-        <h2>SunSide Holiday</h2>
-    </footer>
-    </main>
 </body>
 
 </html>

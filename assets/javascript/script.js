@@ -38,7 +38,7 @@ SubmitbuttonEL.on("submit", function (event) {
 
 
 
-getApi();
+getfetch_FlightData();
 
 // Fetch  flight data from the API - Michael
 // input - Api data

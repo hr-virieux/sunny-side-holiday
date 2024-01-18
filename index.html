@@ -8,32 +8,32 @@
     <!-- tailwind css cdn -->
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <!--link to css file-->
-    <link rel="stylesheet" href="./assests/css/style.css" />
+    <link rel="stylesheet" href="./assets/css/style.css" />
 </head>
 
 <body>
-    <!-- main image -->
-    <header class="relative bg-cover bg-center" style="height: 50vh; background-image: url('./assests/images/Home.png');">
-        <div class="absolute inset-0 flex flex-col justify-center items-center bg-black bg-opacity-50" aria-label="Header Content">
-            <h1 class="text-4xl md:text-6xl lg:text-7xl font-bold text-white">Sunny Side Holidays</h1>
-            <p class="text-lg md:text-xl lg:text-2xl text-white">Embark on the ultimate adventure with us as we tailor an unforgettable journey for your perfect holiday.</p>
-        </div>
-        
-        <!-- Navigation Bar -->
-        <nav aria-label="Main navigation" class="navbar">
-            <ul class="flex justify-between items-center w-full p-2.5">
-                <li class="flex-1 text-center">
-                    <a href="#flights" class="text-white text-2xl font-bold uppercase hover:text-[#795548]">Flights</a>
-                </li>
-                <li class="flex-1 text-center">
-                    <a href="#weatherCheckin" class="text-white text-2xl font-bold uppercase hover:text-[#795548]">Weather Check-In</a>
-                </li>
-                <li class="flex-1 text-center">
-                    <a href="#destination" class="text-white text-2xl font-bold uppercase hover:text-[#795548]">Destination</a>
-                </li>
+    <!-- navigation bar -->
+    <nav style="background-color: var(--primary-color); padding: 10px; text-align: center;">
+        <ul style="list-style: none; margin: 0; padding: 0; display: flex; justify-content: center;">
+            <li style="margin: 0 50px;">
+                <a href="#flights" style="color: var(--background-color); font-weight: bold; text-decoration: none; font-size: var(--font-size-large); text-transform: uppercase; padding: 8px;">Flights</a>
+            </li>
+            <li style="margin: 0 50px;">
+                <a href="#weatherCheckin" style="color: var(--background-color); font-weight: bold; text-decoration: none; font-size: var(--font-size-large); text-transform: uppercase; padding: 8px;">Weather Check-In</a>
+            </li>
+            <li style="margin: 0 50px;">
+                <a href="#destination" style="color: var(--background-color); font-weight: bold; text-decoration: none; font-size: var(--font-size-large); text-transform:uppercase; padding: 8px;">Destination</a>
+            </li>
             </ul>
-        </nav>
-    </header>
+    </nav>
+
+    <!-- Main Image Header -->
+    <div class="relative bg-cover bg-center" style="height: 60vh; background-image: url('./assets/images/Home.png');">
+        <div class="absolute inset-0 bg-black bg-opacity-70 flex flex-col justify-center items-center">
+            <h1 class="text-5xl md:text-7xl font-bold text-white">Sunny Side Holidays</h1>
+            <p class="mt-4 text-xl md:text-3xl text-white">Embark on the ultimate adventure with us as we tailor an unforgettable journey for your perfect holiday.</p>
+        </div>
+    </div>
 
     <!--main section-->
     <!-- section 1 - the flights. forms for departure airport, arrival airport, flight number -->
@@ -77,7 +77,7 @@
     </footer>
 
     <!--link to javascript file-->
-    <script src="./assests/javascript/script.js"></script>
+    <script src="./assets/javascript/script.js"></script>
 </body>
 
 </html>

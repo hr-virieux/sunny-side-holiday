@@ -61,6 +61,7 @@ function getfetch_FlightData() {
             dataType: 'json',
             success: function(apiResponse) {
               console.log(apiResponse)
+              jsObject2HtmlTable(apiResponse,FlightInforEL)
                 if (Array.isArray(apiResponse['results'])) {
                 apiResponse['results'].forEach(flight => {
                   if (!flight['live']['is_ground']) {
@@ -90,7 +91,7 @@ function getfetch_FlightData() {
             dataType: 'json',
             success: function(apiResponse) {
               console.log(apiResponse)
-              jsObject2HtmlTable(apiResponse,FlightInforEL)
+              //jsObject2HtmlTable(apiResponse,FlightInforEL)
                 if (Array.isArray(apiResponse['results'])) {
                 apiResponse['results'].forEach(flight => {
                   if (!flight['live']['is_ground']) {

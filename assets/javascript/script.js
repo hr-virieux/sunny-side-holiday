@@ -37,7 +37,23 @@ SubmitbuttonEL.on("submit", function (event) {
 // Fetch  Weather data from the API 
 //input - user input (arrival airport / flight number) (dates) 
 //output - The data information Current weather. (Display HTML as output)
+function apifetch_WeatherData(location) {
+    var apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
 
+    fetch(apiUrl)
+        .then(function (response) {
+            if (response.ok) {
+                response.json().then(function (data) {
+                    console.log(data); //display weather datat on page
+                });
+            } else {
+                console.log('Error: ' + response.statusText);
+            }
+        })
+        .catch(function (error) {
+            console.log('Unable to connect to https://api.open-meteo.com');
+        });
+}
 
 // Function for forcast - Mark
 //input -  Current Day Weather AKA The data information Current weather.
@@ -76,6 +92,8 @@ function getFromLocalStorage() {
 }
 
 getFromLocalStorage();
+var weatherData = apifetch_WeatherData();
+
 
 
 var TestData_Flights = {
@@ -108,7 +126,7 @@ var TestData_Weather1 = {
     row3    obj3  |           |           |             |  
 */
 
-jsObject2HtmlTable([TestData_Weather1,TestData_Weather1,TestData_Weather1,TestData_Weather1], '.weatherCheckin');
+jsObject2HtmlTable([weatherData,TestData_Weather1,TestData_Weather1,TestData_Weather1], '.weatherCheckin');
 function jsObject2HtmlTable(ObjectArr, htmlSelector, tableColHeadingsArr) {
     var HtmlElement = $(htmlSelector); //get Jquery object for final HTML Object
     HtmlElement.empty(); //clear any exisiting data in html ELEMENT

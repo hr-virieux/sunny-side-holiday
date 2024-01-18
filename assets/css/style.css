@@ -101,7 +101,6 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 #flightInfoOutput, #weatherInfoOutput {
     background-color: var(--background-color);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    display: none; /* Initially hidden */
 }
 
 /* Unhide class to show output boxes */

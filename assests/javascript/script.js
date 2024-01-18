@@ -101,26 +101,40 @@ var TestData_Weather1 = {
     row3    obj3  |           |           |             |  
 */
 
-jsObject2Html(TestData_Weather1, '.weatherCheckin');
-function jsObject2Html(MainObject, htmlSelector) {
+jsObject2HtmlTable(TestData_Weather1, '.weatherCheckin');
+function jsObject2HtmlTable(MainObject, htmlSelector) {
     console.log(MainObject);
     var htmlElement = $(htmlSelector);
     var tempHtmlElement = $('<table></table>').attr('id', 'JsObjectTable');
-    console.log(typeof MainObject);
     if(typeof MainObject !== Array)
     {
         MainObject = [MainObject]; 
     }
-    console.log(typeof MainObject);
-    for (var rowIndex = 0; rowIndex < MainObject.length; rowIndex++)
+    var colNames = [];
+    for (var ObjectIndex = 0; ObjectIndex < MainObject.length; ObjectIndex++)
      {
-        var row = $('<tr></tr>').text(colIndex);
-        for (var colIndex in MainObject[rowIndex]) 
+        var row = $('<tr></tr>').attr('id','table-data-row-'+ObjectIndex);
+        //header column
+        colNames.push('Items');
+        var col = $('<td></td>').text(ObjectIndex+1);
+        col.addClass('table-row-heading');
+        row.append(col);
+        for (var colIndex in MainObject[ObjectIndex]) 
         {
-            var col = $('<td></td>').text(colIndex);
+            colNames.push(colIndex);
+            var col = $('<td></td>').text(MainObject[ObjectIndex][colIndex]);
             row.append(col);
         }
         tempHtmlElement.append(row);
     }
+    //add in table headings
+    var headingsRow = $('<tr></tr>').attr('id','table-header-row');
+    for(var i = 0 ; i<colNames.length;i++)
+    {
+        var headingsCol = $('<td></td>').text(colNames[i]);
+        headingsCol.addClass('table-col-heading');
+        headingsRow.append(headingsCol);
+    }
+    tempHtmlElement.prepend(headingsRow);
 htmlElement.append(tempHtmlElement);
 };

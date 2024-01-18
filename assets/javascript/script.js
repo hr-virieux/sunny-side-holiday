@@ -2,14 +2,11 @@
 SubmitbuttonEL = $('#userFlightInfo');
 FlightInforEL = $('.flight')
 WeatherDataOutputEL = $("#js-weatherData");
-
+FlightDataOutputEL = $("#js-flightData");
 
 //Global Verables
 var storageKey = 'sunny-side-holiday';
 
-// Fetch  flight data from the API - Michael
-// input - Api data
-// output - data for our function FlightData / HTML(Form)
 
 //event listener for submit button - Mark
 //input - Click from the user
@@ -34,6 +31,41 @@ SubmitbuttonEL.on("submit", function (event) {
 // Funtion for the flight data and fetch informaion and display information in HTML - mark
 //input - user input (departure and arrival airport / flight number) (dates) 
 //output - The data information fligth information, status  (HTML Display as outputs) 
+
+// Fetch  flight data from the API - Michael
+// input - Api data
+// output - data for our function FlightData / HTML(Form)
+
+
+
+getApi();
+
+// Fetch  flight data from the API - Michael
+// input - Api data
+// output - data for our function FlightData / HTML(Form)
+    
+function getfetch_FlightData() {
+    
+    var flightAPIkey = '401308e98c0676bc5feb0cea81599270'; //pranita
+    var flightAPIkey = 'b01483a314379d1ea7402d0138aff2fa'; //mark
+    var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a'; //faiza
+
+        var apiUrl = 'http://api.aviationstack.com/v1/flights?access_key=' + flightAPIkey;
+        fetch(apiUrl).then(function(response) {
+          console.log(response);
+            if (response.ok) {
+              responseText.textContent = response.status;
+                    //display weather datat on page
+                }
+                return response.json();
+        }).then(function(data){
+          console.log('here');
+          console.log(data);
+          jsObject2HtmlTable(data,FlightDataOutputEL);
+        }).catch(function(error) {
+            console.log('Unable to connect to aviationstack.com');
+        });
+  }
 
 // Fetch  Weather data from the API 
 //input - user input (arrival airport / flight number) (dates) 

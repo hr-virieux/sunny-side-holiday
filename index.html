@@ -12,7 +12,7 @@
 </head>
 
 <body>
-    <!-- navigation bar -->
+    <!-- Navigation Bar -->
     <nav style="background-color: var(--primary-color); padding: 10px; text-align: center;">
         <ul style="list-style: none; margin: 0; padding: 0; display: flex; justify-content: center;">
             <li style="margin: 0 50px;">
@@ -22,9 +22,9 @@
                 <a href="#weatherCheckin" style="color: var(--background-color); font-weight: bold; text-decoration: none; font-size: var(--font-size-large); text-transform: uppercase; padding: 8px;">Weather Check-In</a>
             </li>
             <li style="margin: 0 50px;">
-                <a href="#destination" style="color: var(--background-color); font-weight: bold; text-decoration: none; font-size: var(--font-size-large); text-transform:uppercase; padding: 8px;">Destination</a>
+                <a href="#destination" style="color: var(--background-color); font-weight: bold; text-decoration: none; font-size: var(--font-size-large); text-transform: uppercase; padding: 8px;">Destination</a>
             </li>
-            </ul>
+        </ul>
     </nav>
 
     <!-- Main Image Header -->
@@ -35,8 +35,7 @@
         </div>
     </div>
 
-    <!--main section-->
-    <!-- section 1 - the flights. forms for departure airport, arrival airport, flight number -->
+    <!-- Section 1 - Flight Information Form -->
     <section id="flights" class="text-center py-6">
         <h1 class="text-3xl font-semibold text-[#333]">Flight Information</h1>
         <form action="#" method="post" class="max-w-md mx-auto mt-4 space-y-4">
@@ -44,44 +43,43 @@
                 <label for="departureAirport" class="block text-sm font-medium">Departure Airport:</label>
                 <input type="text" id="departureAirport" name="departureAirport" required class="border border-gray-300 rounded p-2 w-full">
             </div>
-    
             <div>
                 <label for="arrivalAirport" class="block text-sm font-medium">Arrival Airport:</label>
                 <input type="text" id="arrivalAirport" name="arrivalAirport" required class="border border-gray-300 rounded p-2 w-full">
             </div>
-    
             <div>
                 <label for="flightNumber" class="block text-sm font-medium">Flight Number:</label>
                 <input type="text" id="flightNumber" name="flightNumber" class="border border-gray-300 rounded p-2 w-full">
             </div>
-    
             <div>
                 <input type="submit" value="Continue" class="bg-[#472a2a] text-white py-2 px-4 rounded w-full cursor-pointer hover:bg-[#795548]">
             </div>
         </form>
     </section>
-    
-    <!-- section 2 - weather information -->
-    <section class="weatherCheckin">
-        <!-- weather information will be dynamically inserted here -->
+
+    <!-- Output Boxes for Flight and Weather Information -->
+    <section class="output-section py-6">
+        <!-- Flight Information Output Box -->
+        <div id="flightInfoOutput" class="hidden mx-auto p-4 border border-gray-300 rounded my-4 max-w-md">
+            <h2 class="text-lg font-semibold">Flight Details:</h2>
+            <!-- Flight data will be inserted here -->
+        </div>
+
+        <!-- Weather Information Output Box -->
+        <div id="weatherInfoOutput" class="hidden mx-auto p-4 border border-gray-300 rounded my-4 max-w-md">
+            <h2 class="text-lg font-semibold">Weather Details:</h2>
+            <!-- Weather data will be inserted here -->
+        </div>
     </section>
 
-    <!-- section 3 - previous destination, using local storage -->
-    <section class="destination">
-        <!-- previous destinations will be dynamically inserted here -->
-    </section>
-
-    <!-- footer -->
+    <!-- Footer -->
     <footer class="footer p-7.5 text-center">
         <h2 class="text-xl">Sunny Side Holiday</h2>
     </footer>
-    
-    <!--include jquery-->
+
+    <!-- JavaScript Inclusions -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <!--include dayjs-->
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"
-    integrity="sha256-iu/zLUB+QgISXBLCW/mcDi/rnf4m4uEDO0wauy76x7U=" crossorigin="anonymous"></script>
-    <!--link to javascript file-->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"></script>
     <script src="./assets/javascript/script.js"></script>
 </body>
 

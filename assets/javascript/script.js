@@ -203,8 +203,7 @@ function getAirportCoordinates(AirportName)
 {
     var coordinates = {lat:'',long:''};
     
-    
-    
+       
     return coordinates
 }
 

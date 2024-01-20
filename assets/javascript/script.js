@@ -111,10 +111,10 @@ function apifetch_FlightData(frm) {
   }
 
 // Fetch  Weather data from the API 
-//input - user input (arrival airport / flight number) (dates) 
+//input - location object {lat: XXXX, long: XXXX} 
 //output - The data information Current weather. (Display HTML as output)
 function apifetch_WeatherData(location) {
-    var apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
+    var apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude='+location.lat+'&longitude='+location.long+'&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
 
     if(OPENMETEO_LIVEDATA_ENABLE)
     {

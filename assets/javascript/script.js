@@ -7,6 +7,7 @@ FlightDataOutputEL = $("#js-flightData");
 var storageKey = 'sunny-side-holiday';
 var AVIATIONSTACK_LIVEDATA_ENABLE = false; //switch between live api data and stored data
 var OPENMETEO_LIVEDATA_ENABLE = true; //switch between live api data and stored data
+var AirportData = {};
 
 /*********************** EVENT HANDLERS****************************************** */
 //event listener for submit button - Mark
@@ -191,14 +192,19 @@ function processFlightData(data)
 
 function processAirportData(data)
 {
+    AirportData = data;
     //build Array of airport names
     //add auto complete to departure city
     //add auto complete to arrival city
+    
 }
 
 function getAirportCoordinates(AirportName)
 {
     var coordinates = {lat:'',long:''};
+    
+    
+    
     return coordinates
 }
 

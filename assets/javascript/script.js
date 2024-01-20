@@ -26,7 +26,10 @@ UserSearchInputEL.on("submit", function (event) {
 
     // console.log(event);
     StoreFormToLocalStorage(formData);
-    FlightInforEL.hide();
+    var ArrivalAirportCoords = getAirportCoordinates(formData[arrivalAirport]);
+    apifetch_WeatherData(ArrivalAirportCoords);
+    apifetch_FlightData(formData);
+    //FlightInforEL.hide();
 });
 
 //********************** API FETCH DATA FUNCTIONS ********************** */
@@ -34,7 +37,7 @@ UserSearchInputEL.on("submit", function (event) {
 // input - Api data
 // output - data for our function FlightData / HTML(Form)
     
-function getfetch_FlightData() {
+function apifetch_FlightData() {
     
     if(AVIATIONSTACK_LIVEDATA_ENABLE)
     {
@@ -70,7 +73,7 @@ function getfetch_FlightData() {
         }
   }
 
-  function getfetch_AirportData() {
+  function apifetch_AirportData() {
     
     if(AVIATIONSTACK_LIVEDATA_ENABLE)
     {
@@ -289,10 +292,10 @@ function jsObject2HtmlTable(ObjectArr, JqueryHtmlElement, tableColHeadingsArr) {
 /*********************** DISPLAY FUNCTIONS **************** */
 
 /*********************** RUN WITH PAGE LOAD ************************************ */
-getfetch_FlightData();
-getfetch_AirportData();
+//apifetch_FlightData();
+apifetch_AirportData();
 getFromLocalStorage();
-apifetch_WeatherData();
+//apifetch_WeatherData();
 
 
 

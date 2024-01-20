@@ -8,7 +8,6 @@ var storageKey = 'sunny-side-holiday';
 var AVIATIONSTACK_LIVEDATA_ENABLE = false; //switch between live api data and stored data
 var OPENMETEO_LIVEDATA_ENABLE = true; //switch between live api data and stored data
 var AirportData = {};
-var amedeousoAuthkey = '';
 
 /*********************** EVENT HANDLERS****************************************** */
 //event listener for submit button - Mark
@@ -36,21 +35,18 @@ UserSearchInputEL.on("submit", function (event) {
 
 //********************** API FETCH DATA FUNCTIONS ********************** */
 function apifetch_NearestAirport(name) {
-    var url = 'https://api.api-ninjas.com/v1/airports?name=' + name;
+    var apiUrl = 'https://api.api-ninjas.com/v1/airports?name=' + name;
+    var apiKey = 'PyfkUVAOi6zNoYdm61eEjw==KcvlBVxRxci1Pgc6';
 
-    fetch(apiURL, {
-        headers: {
-            'Authorization': data.token_type + ' ' + data.access_token,
-            'Content-Type': 'application/x-www-form-urlencoded'
-        }
-    }).then(function (response) {
+    fetch(apiUrl,{headers:{'X-Api-Key': apiKey}})
+    .then(function (response) {
         return response.json(); // convert to json
     }).then(function (data) {
         //***TODO**** - remove console log when finished!!!
-        console.log(data); // Log the API data
+        console.log('Nearest Airport',data); // Log the API data
         //***TODO**** - feedback suggestions to user of airports!!!
     }).catch(function (err) {
-        console.log('something went wrong', err); // Log any errors
+        console.log('Unable to connect to api.api-ninjas.com', err); // Log any errors
     });
 }
 function apifetch_amedeous_w_oAuth() {
@@ -58,7 +54,7 @@ function apifetch_amedeous_w_oAuth() {
     var key = 'PN8pHRKabX89904GM6DFRTsqiVndb4Vw';
     var secret = 'bsQ4g4TKaWbKbOUq';
 
-    //***TODO**** - hange this url to match the required data call from amadeous.com!!!
+    //***TODO**** - change this url to match the required data call from amadeous.com!!!
     var apiURL = 'https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=51.57285&longitude=-0.44161';
 
     fetch(authUrl, {
@@ -81,37 +77,43 @@ function apifetch_amedeous_w_oAuth() {
     }).then(function (data) {
         // Log the API data
         //***TODO**** - remove console log when debug complete
-        console.log(data);
+        console.log('amedeous',data);
         //***TODO**** - Do stuff with this data!!!
     }).catch(function (err) {
-        console.log('something went wrong', err); // Log any errors
+        console.log('Unable to connect to https://api.amadeus.com', err); // Log any errors
     });
 }
 
 // Fetch  Weather data from the API 
 //input - location object {lat: XXXX, long: XXXX} 
 //output - The data information Current weather. (Display HTML as output)
-function apifetch_WeatherData(PlaceName) {
+function apifetch_WeatherData(location) {
+    if(location === undefined) //if blank set location to melbourne airport
+    {
+        var location = {
+           lat:  '28.1028003693',
+           long: '-80.6453018188'
+        }
+    }
 
     //fetch weather Data
     var apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + location.lat + '&longitude=' + location.long + '&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
 
     if (OPENMETEO_LIVEDATA_ENABLE) {
-        fetch(apiUrl)
-            .then(function (response) {
-                if (response.ok) {
-                    response.json().then(function (data) {
-                        console.log(data); //display weather datat on page
-                        processWeatherData(data);
-
-                    });
-                } else {
-                    console.log('Error: ' + response.statusText);
-                }
-            })
-            .catch(function (error) {
-                console.log('Unable to connect to https://api.open-meteo.com');
-            });
+        fetch(apiUrl, {
+                headers: {}
+            
+        }).then(function (response) {
+            return response.json(); //convert responce to json
+        }).then(function (data) {
+            // Log the API data
+            //***TODO**** - remove console log when debug complete
+            console.log('weather',data);
+            processWeatherData(data);
+        }).catch(function (err) {
+            console.log('Unable to connect to https://api.open-meteo.com', err); // Log any errors
+        });
+        
     }
     else {
         processWeatherData(TestData_Weather1);
@@ -146,7 +148,6 @@ function getFromLocalStorage() {
     for (var i in userData) {
         $('#' + i).attr('value', (userData[i][userData[i].length - 1])); //update each element with last stored information 
     }
-
     return userData;
 }
 
@@ -155,6 +156,7 @@ function getFromLocalStorage() {
 //input -  Current Day Weather AKA The data information Current weather.
 //output - Future 5 days  forcast -
 function processWeatherData(data) {
+    //***TODO**** - complete function to display weather data
     jsObject2HtmlTable(data, WeatherDataOutputEL);
 }
 
@@ -162,26 +164,8 @@ function processWeatherData(data) {
 //input - user input (departure and arrival airport / flight number) (dates) 
 //output - The data information fligth information, status  (HTML Display as outputs) 
 function processFlightData(data) {
+    //***TODO**** - complete function to display flight data
     jsObject2HtmlTable(data, FlightDataOutputEL);
-}
-
-function processAirportData(data) {
-    AirportData = data;
-    //build Array of airport names
-    var AirportNames = []
-    for (var i = 0; i < data.length; i++) {
-        data[i]
-    }
-    //add auto complete to departure city
-    //add auto complete to arrival city
-
-}
-
-function getAirportCoordinates(AirportName) {
-    var coordinates = { lat: '', long: '' };
-
-
-    return coordinates
 }
 
 //function to convert a generic (structured) javascript object to a html block
@@ -276,10 +260,11 @@ function jsObject2HtmlTable(ObjectArr, JqueryHtmlElement, tableColHeadingsArr) {
 /*********************** RUN WITH PAGE LOAD ************************************ */
 //apifetch_FlightData();
 //apifetch_AirportData();
-apifetch_NearestAirport();
+apifetch_NearestAirport('Melbourne');
+apifetch_amedeous_w_oAuth();
 //apifetch_AirportData_Airportdb("MEL")
 getFromLocalStorage();
-//apifetch_WeatherData();
+apifetch_WeatherData();
 
 
 

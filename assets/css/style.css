@@ -6,6 +6,10 @@
     --font-size-large: 30px;
 }
 
+.ui-datepicker{
+    background-color: white;
+}
+
 /* Resetting default settings for navigation */
 .navbar,
 .navbar ul,

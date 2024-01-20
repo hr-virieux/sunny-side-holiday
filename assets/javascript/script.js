@@ -1,13 +1,16 @@
 //Html elements
+AirportInputELs = $('.js-airportInput');
+DateInputELs = $('#arrivalDate');
 UserSearchInputEL = $('#userFlightInfo');
 WeatherDataOutputEL = $("#js-weatherData");
 FlightDataOutputEL = $("#js-flightData");
+userData = {};
 
 //Global Verables
 var storageKey = 'sunny-side-holiday';
 var AVIATIONSTACK_LIVEDATA_ENABLE = false; //switch between live api data and stored data
 var OPENMETEO_LIVEDATA_ENABLE = true; //switch between live api data and stored data
-var AirportData = {};
+//var AirportData = {};
 
 /*********************** EVENT HANDLERS****************************************** */
 //event listener for submit button - Mark
@@ -27,14 +30,27 @@ UserSearchInputEL.on("submit", function (event) {
 
     // console.log(event);
     StoreFormToLocalStorage(formData);
-    var ArrivalAirportCoords = getAirportCoordinates(formData[arrivalAirport]);
-    apifetch_WeatherData(ArrivalAirportCoords);
-    apifetch_FlightData(formData);
+    userData = formData;
+    
+    apifetch_NearestAirport(formData.departureAirport,$('#departureAirport-check'));
+    apifetch_NearestAirport(formData.arrivalAirport,$('#arrivalAirport-check'));
+
+    if(formData.flightNumber)
+    {
+        //render flight data
+    }
+    else
+    {
+        //load list of flights from departure city to arrival city on date
+    }
+
+   
+    //apifetch_FlightData(formData);
     //FlightInforEL.hide();
 });
 
 //********************** API FETCH DATA FUNCTIONS ********************** */
-function apifetch_NearestAirport(name) {
+function apifetch_NearestAirport(name,HtmlElement) {
     var apiUrl = 'https://api.api-ninjas.com/v1/airports?name=' + name;
     var apiKey = 'PyfkUVAOi6zNoYdm61eEjw==KcvlBVxRxci1Pgc6';
 
@@ -45,10 +61,12 @@ function apifetch_NearestAirport(name) {
         //***TODO**** - remove console log when finished!!!
         console.log('Nearest Airport',data); // Log the API data
         //***TODO**** - feedback suggestions to user of airports!!!
+        Array2HtmlUnorderedList(getAirportNamesArr(data),HtmlElement);
     }).catch(function (err) {
         console.log('Unable to connect to api.api-ninjas.com', err); // Log any errors
     });
 }
+
 function apifetch_amedeous_w_oAuth() {
     var authUrl = 'https://test.api.amadeus.com/v1/security/oauth2/token';
     var key = 'PN8pHRKabX89904GM6DFRTsqiVndb4Vw';
@@ -152,6 +170,17 @@ function getFromLocalStorage() {
 }
 
 /*********************** DATA PROCESS/ MANIPULATION FUNCTIONS ****************************************** */
+function getAirportNamesArr(airportData)
+{
+    var arr = []
+    for (var i in airportData)
+    {
+        arr.push(airportData[i].name + '/'+airportData[i].country + '('+ airportData[i].iata+')');
+    }
+    return arr;
+}
+
+
 // Function for forcast - Mark
 //input -  Current Day Weather AKA The data information Current weather.
 //output - Future 5 days  forcast -
@@ -166,6 +195,19 @@ function processWeatherData(data) {
 function processFlightData(data) {
     //***TODO**** - complete function to display flight data
     jsObject2HtmlTable(data, FlightDataOutputEL);
+}
+
+function Array2HtmlUnorderedList(arr,HtmlElement)
+{
+    var ul = $('<ul></ul>')
+    for(var i=0;i<arr.length;i++)
+    {
+        var li = $('<li></li>').text(arr[i]);
+        ul.append(li);
+    }
+    HtmlElement.empty();
+    HtmlElement.append(ul);
+
 }
 
 //function to convert a generic (structured) javascript object to a html block
@@ -257,7 +299,14 @@ function jsObject2HtmlTable(ObjectArr, JqueryHtmlElement, tableColHeadingsArr) {
 
 /*********************** DISPLAY FUNCTIONS **************** */
 
+
+
+
 /*********************** RUN WITH PAGE LOAD ************************************ */
+$(function Initialise()
+{
+    DateInputELs.datepicker();
+
 //apifetch_FlightData();
 //apifetch_AirportData();
 apifetch_NearestAirport('Melbourne');
@@ -266,6 +315,6 @@ apifetch_amedeous_w_oAuth();
 getFromLocalStorage();
 apifetch_WeatherData();
 
-
+})
 
 

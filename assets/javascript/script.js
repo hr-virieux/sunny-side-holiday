@@ -10,6 +10,8 @@ userData = {};
 var storageKey = 'sunny-side-holiday';
 var AVIATIONSTACK_LIVEDATA_ENABLE = false; //switch between live api data and stored data
 var OPENMETEO_LIVEDATA_ENABLE = true; //switch between live api data and stored data
+var departureAirportCode = '';
+var arrivalAirportCode '';
 //var AirportData = {};
 
 /*********************** EVENT HANDLERS****************************************** */
@@ -42,6 +44,8 @@ UserSearchInputEL.on("submit", function (event) {
     else
     {
         //load list of flights from departure city to arrival city on date
+        if(arrivalAirportCode != '' && departureAirportCode != '' && formData.departureDate && formData.numOfAdults)
+        search = {departureAirport: string, arrivalAirport: string, departureDate: string($date),adults=1}
     }
 
    
@@ -60,20 +64,60 @@ function apifetch_NearestAirport(name,HtmlElement) {
     }).then(function (data) {
         //***TODO**** - remove console log when finished!!!
         console.log('Nearest Airport',data); // Log the API data
-        //***TODO**** - feedback suggestions to user of airports!!!
+        //***TODO**** - Can we make this an auto complete or links to select airport!!!
         Array2HtmlUnorderedList(getAirportNamesArr(data),HtmlElement);
     }).catch(function (err) {
         console.log('Unable to connect to api.api-ninjas.com', err); // Log any errors
     });
 }
 
-function apifetch_amedeous_w_oAuth() {
+//get list of flights that match critera
+//search = {departureAirport: string, arrivalAirport: string, departureDate: string($date),adults=1};
+function apifetch_FlightOffers(search) {
     var authUrl = 'https://test.api.amadeus.com/v1/security/oauth2/token';
     var key = 'PN8pHRKabX89904GM6DFRTsqiVndb4Vw';
     var secret = 'bsQ4g4TKaWbKbOUq';
 
     //***TODO**** - change this url to match the required data call from amadeous.com!!!
-    var apiURL = 'https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=51.57285&longitude=-0.44161';
+    var apiURL = 'https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode='+search.departureAirport+'&destinationLocationCode='+search.arrivalAirport+'&departureDate='+search.depatureDate+'&adults='+search.adults;
+
+    fetch(authUrl, {
+        method: 'POST',
+        body: 'grant_type=client_credentials&client_id=' + key + '&client_secret=' + secret,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(function (resp) {
+        return resp.json(); // Return the response as JSON
+    }).then(function (data) {
+        // start main API call using token from above
+        return fetch(apiURL, {
+            headers: {
+                'Authorization': data.token_type + ' ' + data.access_token,
+                'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+    }).then(function (response) {
+        return response.json(); //convert responce to json
+    }).then(function (data) {
+        // Log the API data
+        //***TODO**** - remove console log when debug complete
+        console.log('amedeous',data);
+        //***TODO**** - Do stuff with this data!!!
+    }).catch(function (err) {
+        console.log('Unable to connect to https://api.amadeus.com', err); // Log any errors
+    });
+}
+
+
+
+//get flight details from above
+function apifetch_flightData_fromamedeous_w_oAuth() {
+    var authUrl = 'https://test.api.amadeus.com/v1/security/oauth2/token';
+    var key = 'PN8pHRKabX89904GM6DFRTsqiVndb4Vw';
+    var secret = 'bsQ4g4TKaWbKbOUq';
+
+    //***TODO**** - change this url to match the required data call from amadeous.com!!!
+    var apiURL = 'https://test.api.amadeus.com/v2//shopping/flight-offers?originLocationCode=51.57285&longitude=-0.44161';
 
     fetch(authUrl, {
         method: 'POST',
@@ -175,7 +219,7 @@ function getAirportNamesArr(airportData)
     var arr = []
     for (var i in airportData)
     {
-        arr.push(airportData[i].name + '/'+airportData[i].country + '('+ airportData[i].iata+')');
+        arr.push(airportData[i].iata+'- '+airportData[i].name + '/'+airportData[i].country );
     }
     return arr;
 }

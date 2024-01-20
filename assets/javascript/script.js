@@ -37,7 +37,7 @@ UserSearchInputEL.on("submit", function (event) {
 // input - Api data
 // output - data for our function FlightData / HTML(Form)
     
-function apifetch_FlightData() {
+function apifetch_FlightData(frm) {
     
     if(AVIATIONSTACK_LIVEDATA_ENABLE)
     {

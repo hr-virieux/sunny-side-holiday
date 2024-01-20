@@ -5,6 +5,8 @@ FlightDataOutputEL = $("#js-flightData");
 
 //Global Verables
 var storageKey = 'sunny-side-holiday';
+var AVIATIONSTACK_ENABLE = false;
+
 
 /*********************** EVENT HANDLERS****************************************** */
 //event listener for submit button - Mark
@@ -34,6 +36,8 @@ UserSearchInputEL.on("submit", function (event) {
     
 function getfetch_FlightData() {
     
+    if(AVIATIONSTACK_ENABLE)
+    {
     var flightAPIkey = '401308e98c0676bc5feb0cea81599270'; //pranita
     var flightAPIkey = 'b01483a314379d1ea7402d0138aff2fa'; //mark
     var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a'; //faiza
@@ -49,7 +53,7 @@ function getfetch_FlightData() {
             success: function(apiResponse) {
               console.log(apiResponse)
               jsObject2HtmlTable(apiResponse,FlightInforEL)
-                if (Array.isArray(apiResponse['results'])) {
+                /*if (Array.isArray(apiResponse['results'])) {
                 apiResponse['results'].forEach(flight => {
                   if (!flight['live']['is_ground']) {
                     console.log(`${flight['airline']['name']} flight ${flight['flight']['iata']}`,
@@ -57,13 +61,19 @@ function getfetch_FlightData() {
                         `to ${flight['arrival']['airport']} (${flight['arrival']['iata']}) is in the air.`);
                   }
                 });
-              }
+              }*/
             }
           });
+        }else
+        {
+            processFlightData(TestData_Flights);
+        }
   }
 
   function getfetch_AirportData() {
     
+    if(AVIATIONSTACK_ENABLE)
+    {
     var flightAPIkey = '401308e98c0676bc5feb0cea81599270'; //pranita
     var flightAPIkey = 'b01483a314379d1ea7402d0138aff2fa'; //mark
     var flightAPIkey = 'aaf7bb072f23ce943f9f7d31de23e18a'; //faiza
@@ -78,8 +88,9 @@ function getfetch_FlightData() {
             dataType: 'json',
             success: function(apiResponse) {
               console.log(apiResponse)
+              processAirportData(apiResponse);
               //jsObject2HtmlTable(apiResponse,FlightInforEL)
-                if (Array.isArray(apiResponse['results'])) {
+                /*if (Array.isArray(apiResponse['results'])) {
                 apiResponse['results'].forEach(flight => {
                   if (!flight['live']['is_ground']) {
                     console.log(`${flight['airline']['name']} flight ${flight['flight']['iata']}`,
@@ -87,9 +98,13 @@ function getfetch_FlightData() {
                         `to ${flight['arrival']['airport']} (${flight['arrival']['iata']}) is in the air.`);
                   }
                 });
-              }
+              }*/
             }
           });
+        }else
+        {
+            processAirportData(TestData_Airports);
+        }
   }
 
 // Fetch  Weather data from the API 
@@ -98,12 +113,14 @@ function getfetch_FlightData() {
 function apifetch_WeatherData(location) {
     var apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
 
+    if(OPENMETEO_ENABLE)
+    {
     fetch(apiUrl)
         .then(function (response) {
             if (response.ok) {
                 response.json().then(function (data) {
                     console.log(data); //display weather datat on page
-                    jsObject2HtmlTable(data, WeatherDataOutputEL);
+                    processWeatherData(data);
                     
                 });
             } else {
@@ -113,6 +130,11 @@ function apifetch_WeatherData(location) {
         .catch(function (error) {
             console.log('Unable to connect to https://api.open-meteo.com');
         });
+    }
+    else
+    {
+        processWeatherData(TestData_Weather1);
+    }
 }
 
 /*********************** LOCAL STORAGE FUNCTION ********************************************** */
@@ -147,14 +169,35 @@ function getFromLocalStorage() {
     return userData;
 }
 
-/*********************** DATA MANIPULATION FUNCTIONS ****************************************** */
+/*********************** DATA PROCESS/ MANIPULATION FUNCTIONS ****************************************** */
 // Function for forcast - Mark
 //input -  Current Day Weather AKA The data information Current weather.
 //output - Future 5 days  forcast -
+function processWeatherData(data)
+{
+    jsObject2HtmlTable(data,WeatherDataOutputEL);
+}
 
 // Funtion for the flight data and fetch informaion and display information in HTML - mark
 //input - user input (departure and arrival airport / flight number) (dates) 
 //output - The data information fligth information, status  (HTML Display as outputs) 
+function processFlightData(data)
+{
+    jsObject2HtmlTable(data,FlightDataOutputEL);
+}
+
+function processAirportData(data)
+{
+    //build Array of airport names
+    //add auto complete to departure city
+    //add auto complete to arrival city
+}
+
+function getAirportCoordinates(AirportName)
+{
+    var coordinates = {lat:'',long:''};
+    return coordinates
+}
 
 //function to convert a generic (structured) javascript object to a html block
 //Arrays become rows and object keys become collums
@@ -175,8 +218,6 @@ function getFromLocalStorage() {
     row2    obj2  |           |           |             |  
     row3    obj3  |           |           |             |  
 */
-
-
 function jsObject2HtmlTable(ObjectArr, JqueryHtmlElement, tableColHeadingsArr) {
     //var HtmlElement = $(htmlSelector); //get Jquery object for final HTML Object
     JqueryHtmlElement.empty(); //clear any exisiting data in html ELEMENT
@@ -251,7 +292,7 @@ function jsObject2HtmlTable(ObjectArr, JqueryHtmlElement, tableColHeadingsArr) {
 getfetch_FlightData();
 getfetch_AirportData();
 getFromLocalStorage();
-var weatherData = apifetch_WeatherData();
+apifetch_WeatherData();
 
 
 

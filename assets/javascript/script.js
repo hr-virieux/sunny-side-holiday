@@ -5,8 +5,8 @@ FlightDataOutputEL = $("#js-flightData");
 
 //Global Verables
 var storageKey = 'sunny-side-holiday';
-var AVIATIONSTACK_ENABLE = false;
-
+var AVIATIONSTACK_LIVEDATA_ENABLE = false; //switch between live api data and stored data
+var OPENMETEO_LIVEDATA_ENABLE = true; //switch between live api data and stored data
 
 /*********************** EVENT HANDLERS****************************************** */
 //event listener for submit button - Mark
@@ -36,7 +36,7 @@ UserSearchInputEL.on("submit", function (event) {
     
 function getfetch_FlightData() {
     
-    if(AVIATIONSTACK_ENABLE)
+    if(AVIATIONSTACK_LIVEDATA_ENABLE)
     {
     var flightAPIkey = '401308e98c0676bc5feb0cea81599270'; //pranita
     var flightAPIkey = 'b01483a314379d1ea7402d0138aff2fa'; //mark
@@ -72,7 +72,7 @@ function getfetch_FlightData() {
 
   function getfetch_AirportData() {
     
-    if(AVIATIONSTACK_ENABLE)
+    if(AVIATIONSTACK_LIVEDATA_ENABLE)
     {
     var flightAPIkey = '401308e98c0676bc5feb0cea81599270'; //pranita
     var flightAPIkey = 'b01483a314379d1ea7402d0138aff2fa'; //mark
@@ -113,7 +113,7 @@ function getfetch_FlightData() {
 function apifetch_WeatherData(location) {
     var apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=52.52&longitude=13.41&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
 
-    if(OPENMETEO_ENABLE)
+    if(OPENMETEO_LIVEDATA_ENABLE)
     {
     fetch(apiUrl)
         .then(function (response) {

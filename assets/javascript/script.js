@@ -1,13 +1,23 @@
 //Html elements
+AirportInputELs = $('.js-airportInput');
+DateInputELs = $('#departureDate');
 UserSearchInputEL = $('#userFlightInfo');
 WeatherDataOutputEL = $("#js-weatherData");
 FlightDataOutputEL = $("#js-flightData");
+FlightOfferDataOutputEL = $("#js-flightOfferData");
+
+departureAirportEL = $('#departureAirport');
+arrivalAirportEL = $('#arrivalAirport');
+userData = {};
 
 //Global Verables
 var storageKey = 'sunny-side-holiday';
 var AVIATIONSTACK_LIVEDATA_ENABLE = false; //switch between live api data and stored data
 var OPENMETEO_LIVEDATA_ENABLE = true; //switch between live api data and stored data
-var AirportData = {};
+var departureAirportCode = '';
+var arrivalAirportCode = '';
+var StoredAirportData = [];
+//var AirportData = {};
 
 /*********************** EVENT HANDLERS****************************************** */
 //event listener for submit button - Mark
@@ -15,6 +25,10 @@ var AirportData = {};
 //output - call the next function down
 UserSearchInputEL.on("submit", function (event) {
     event.preventDefault();
+
+    var departureAirportCode = '';
+    var arrivalAirportCode = '';
+
     var formData = {};
     for (var i = 0; i < event.currentTarget.length; i++) {
         console.log(event.currentTarget[i].id);
@@ -27,35 +41,90 @@ UserSearchInputEL.on("submit", function (event) {
 
     // console.log(event);
     StoreFormToLocalStorage(formData);
-    var ArrivalAirportCoords = getAirportCoordinates(formData[arrivalAirport]);
-    apifetch_WeatherData(ArrivalAirportCoords);
-    apifetch_FlightData(formData);
+    userData = formData;
+  
+    
+
+    if (formData.departureAirport.charAt(3) == '-') {
+        departureAirportCode = formData.departureAirport.split('-')[0];
+    }
+    else{
+        apifetch_NearestAirport(formData.departureAirport, $('#departureAirport-check'));
+    }
+    if (formData.arrivalAirport.charAt(3) == '-') {
+        arrivalAirportCode = formData.arrivalAirport.split('-')[0];
+        apifetch_WeatherData_fromIATA(arrivalAirportCode);
+    }else{
+        apifetch_NearestAirport(formData.arrivalAirport, $('#arrivalAirport-check'));
+    }
+
+    if (formData.flightNumber) {
+        if(formData.flightNumber != '' && formData.departureDate !='')
+        //render flight data
+            var search = {carrierCode: formData.flightNumber.slice(0,2), 
+                flightNumber: formData.flightNumber.slice(2,6), 
+                departureDate: dayjs(formData.departureDate,'YY-MM-DD').format('YYYY-MM-DD')};
+
+        apifetch_flightData(search);
+            }
+    
+        //load list of flights from departure city to arrival city on date
+        if (arrivalAirportCode != '' && departureAirportCode != '' && formData.departureDate && formData.numOfAdults) {
+            var search = {
+                departureAirport: departureAirportCode,
+                arrivalAirport: arrivalAirportCode,
+                departureDate: dayjs(formData.departureDate,'YY-MM-DD').format('YYYY-MM-DD'),
+                adults: formData.numOfAdults
+            };
+            apifetch_FlightOffers(search, FlightOfferDataOutputEL);
+        }
+    
+
+
+    //apifetch_FlightData(formData);
     //FlightInforEL.hide();
 });
 
+//event handler to catch user airport selection
+$('#departureAirport-check').on('click', function (event) {
+    var text = event.target.textContent;
+    //departureAirportCode = text.split('-')[0];
+    $('#departureAirport').val(text);
+});
+
+$('#arrivalAirport-check').on('click', function (event) {
+    var text = event.target.textContent;
+    //arrivalAirportCode = text.split('-')[0];
+    $('#arrivalAirport').val(text);
+});
+
 //********************** API FETCH DATA FUNCTIONS ********************** */
-function apifetch_NearestAirport(name) {
+function apifetch_NearestAirport(name, HtmlElement) {
     var apiUrl = 'https://api.api-ninjas.com/v1/airports?name=' + name;
     var apiKey = 'PyfkUVAOi6zNoYdm61eEjw==KcvlBVxRxci1Pgc6';
 
-    fetch(apiUrl,{headers:{'X-Api-Key': apiKey}})
-    .then(function (response) {
-        return response.json(); // convert to json
-    }).then(function (data) {
-        //***TODO**** - remove console log when finished!!!
-        console.log('Nearest Airport',data); // Log the API data
-        //***TODO**** - feedback suggestions to user of airports!!!
-    }).catch(function (err) {
-        console.log('Unable to connect to api.api-ninjas.com', err); // Log any errors
-    });
+    fetch(apiUrl, { headers: { 'X-Api-Key': apiKey } })
+        .then(function (response) {
+            return response.json(); // convert to json
+        }).then(function (data) {
+            //***TODO**** - remove console log when finished!!!
+            console.log('Nearest Airport', data); // Log the API data
+            //***TODO**** - Can we make this an auto complete or links to select airport!!!
+            Array2HtmlUnorderedList(getAirportNamesArr(data), HtmlElement);
+        }).catch(function (err) {
+            console.log('Unable to connect to api.api-ninjas.com', err); // Log any errors
+        });
 }
-function apifetch_amedeous_w_oAuth() {
+
+//get list of flights that match critera
+//search = {departureAirport: string, arrivalAirport: string, departureDate: string($date),adults=1};
+function apifetch_FlightOffers(search) {
     var authUrl = 'https://test.api.amadeus.com/v1/security/oauth2/token';
     var key = 'PN8pHRKabX89904GM6DFRTsqiVndb4Vw';
     var secret = 'bsQ4g4TKaWbKbOUq';
 
     //***TODO**** - change this url to match the required data call from amadeous.com!!!
-    var apiURL = 'https://test.api.amadeus.com/v1/reference-data/locations/airports?latitude=51.57285&longitude=-0.44161';
+    var apiURL = 'https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=' + search.departureAirport + '&destinationLocationCode=' + search.arrivalAirport + '&departureDate=' + search.departureDate + '&adults=' + search.adults;
 
     fetch(authUrl, {
         method: 'POST',
@@ -70,15 +139,58 @@ function apifetch_amedeous_w_oAuth() {
         return fetch(apiURL, {
             headers: {
                 'Authorization': data.token_type + ' ' + data.access_token,
-                'Content-Type': 'application/x-www-form-urlencoded' }
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
         });
     }).then(function (response) {
         return response.json(); //convert responce to json
     }).then(function (data) {
         // Log the API data
         //***TODO**** - remove console log when debug complete
-        console.log('amedeous',data);
+        console.log('amedeous', data);
         //***TODO**** - Do stuff with this data!!!
+        processFlightOfferData(data);
+    }).catch(function (err) {
+        console.log('Unable to connect to https://api.amadeus.com', err); // Log any errors
+    });
+}
+
+
+
+//get flight details from above
+//search = {carrierCode: string, flightNumber:string, departureDate: 'YYYY-MM-DD'};
+function apifetch_flightData(search) {
+    var authUrl = 'https://test.api.amadeus.com/v1/security/oauth2/token';
+    var key = 'PN8pHRKabX89904GM6DFRTsqiVndb4Vw';
+    var secret = 'bsQ4g4TKaWbKbOUq';
+
+    //***TODO**** - change this url to match the required data call from amadeous.com!!!
+    var apiURL = 'https://test.api.amadeus.com/v2/schedule/flights?carrierCode='+search.carrierCode+'&flightNumber='+search.flightNumber+'&scheduledDepartureDate='+search.departureDate;
+
+    fetch(authUrl, {
+        method: 'POST',
+        body: 'grant_type=client_credentials&client_id=' + key + '&client_secret=' + secret,
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+    }).then(function (resp) {
+        return resp.json(); // Return the response as JSON
+    }).then(function (data) {
+        // start main API call using token from above
+        return fetch(apiURL, {
+            headers: {
+                'Authorization': data.token_type + ' ' + data.access_token,
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
+        });
+    }).then(function (response) {
+        return response.json(); //convert responce to json
+    }).then(function (data) {
+        // Log the API data
+        //***TODO**** - remove console log when debug complete
+        console.log('amedeous', data);
+        //***TODO**** - Do stuff with this data!!!
+        processFlightData(data);
     }).catch(function (err) {
         console.log('Unable to connect to https://api.amadeus.com', err); // Log any errors
     });
@@ -87,38 +199,48 @@ function apifetch_amedeous_w_oAuth() {
 // Fetch  Weather data from the API 
 //input - location object {lat: XXXX, long: XXXX} 
 //output - The data information Current weather. (Display HTML as output)
-function apifetch_WeatherData(location) {
-    if(location === undefined) //if blank set location to melbourne airport
-    {
-        var location = {
-           lat:  '28.1028003693',
-           long: '-80.6453018188'
-        }
-    }
+function apifetch_WeatherData_fromIATA(IATA) {
 
-    //fetch weather Data
-    var apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + location.lat + '&longitude=' + location.long + '&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
+    var AirportApiUrl = 'https://api.api-ninjas.com/v1/airports?iata=' + IATA;
+    var AirportApiKey = 'PyfkUVAOi6zNoYdm61eEjw==KcvlBVxRxci1Pgc6';
 
-    if (OPENMETEO_LIVEDATA_ENABLE) {
-        fetch(apiUrl, {
-                headers: {}
-            
-        }).then(function (response) {
-            return response.json(); //convert responce to json
+    fetch(AirportApiUrl, { headers: { 'X-Api-Key': AirportApiKey } })
+        .then(function (response) {
+            return response.json(); // convert to json
         }).then(function (data) {
-            // Log the API data
-            //***TODO**** - remove console log when debug complete
-            console.log('weather',data);
-            processWeatherData(data);
+            //***TODO**** - remove console log when finished!!!
+            console.log('weather Airport', data); // Log the API data
+            //***TODO**** - Can we make this an auto complete or links to select airport!!!
+            //fetch weather Data
+            var weatherApiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + data[0].latitude + '&longitude=' + data[0].longitude + '&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
+
+            if (OPENMETEO_LIVEDATA_ENABLE) {
+                fetch(weatherApiUrl, {
+                    headers: {}
+
+                }).then(function (response) {
+                    return response.json(); //convert responce to json
+                }).then(function (data) {
+                    // Log the API data
+                    //***TODO**** - remove console log when debug complete
+                    console.log('weather', data);
+                    processWeatherData(data);
+                }).catch(function (err) {
+                    console.log('Unable to connect to https://api.open-meteo.com', err); // Log any errors
+                });
+
+            }
+            else {
+                processWeatherData(TestData_Weather1);
+            }
         }).catch(function (err) {
-            console.log('Unable to connect to https://api.open-meteo.com', err); // Log any errors
+            console.log('Unable to connect to api.api-ninjas.com', err); // Log any errors
         });
-        
-    }
-    else {
-        processWeatherData(TestData_Weather1);
-    }
 }
+
+
+
+
 
 /*********************** LOCAL STORAGE FUNCTION ********************************************** */
 // Function storage previous Destination  - Mark
@@ -152,20 +274,76 @@ function getFromLocalStorage() {
 }
 
 /*********************** DATA PROCESS/ MANIPULATION FUNCTIONS ****************************************** */
+function getAirportNamesArr(airportData) {
+    var arr = []
+    for (var i in airportData) {
+        arr.push(airportData[i].iata.toUpperCase() + '- ' + airportData[i].name + '/' + airportData[i].country);
+        StoredAirportData.push(airportData);
+    }
+    return arr;
+}
+
+function getCoordsFromIATAcode(iata) {
+    for (var i = 0; i < StoredAirportData.length; i++) {
+        if (StoredAirportData[i].iata == iata) {
+            return { lat: StoredAirportData[i].lat, long: StoredAirportData[i].long };
+        }
+    }
+    return { lat: '000', long: '000' };;
+}
+
+
 // Function for forcast - Mark
 //input -  Current Day Weather AKA The data information Current weather.
 //output - Future 5 days  forcast -
 function processWeatherData(data) {
-    //***TODO**** - complete function to display weather data
-    jsObject2HtmlTable(data, WeatherDataOutputEL);
+    var arr = [];
+    for (var j = 0; j < data.daily.time.length; j++) {
+        arr.push({});
+        for (var i in data.daily) {
+            if (i === 'time') {
+                arr[j][i] = dayjs(data.daily[i][j]).format('DD/MM/YYYY');
+            }
+            else
+            {
+            arr[j][i] = data.daily[i][j];
+            }
+        }
+    }
+    jsObject2HtmlTable(arr, WeatherDataOutputEL);
 }
 
 // Funtion for the flight data and fetch informaion and display information in HTML - mark
 //input - user input (departure and arrival airport / flight number) (dates) 
 //output - The data information fligth information, status  (HTML Display as outputs) 
+function processFlightOfferData(data) {
+    //***TODO**** - complete function to display flight data
+    var newArr = []
+    for(var i=0;i<10;i++)
+    {
+        newArr.push(data.data[i]);
+    }
+
+    jsObject2HtmlTable(newArr, FlightOfferDataOutputEL);
+}
+
+// display list of available flights to purchase
 function processFlightData(data) {
     //***TODO**** - complete function to display flight data
+
     jsObject2HtmlTable(data, FlightDataOutputEL);
+}
+
+function Array2HtmlUnorderedList(arr, HtmlElement, liClass) {
+    var ul = $('<ul></ul>')
+    for (var i = 0; i < arr.length; i++) {
+        var li = $('<li></li>').text(arr[i]);
+        if (liClass !== undefined) { li.addClass(liClass); }
+        ul.append(li);
+    }
+    HtmlElement.empty();
+    HtmlElement.append(ul);
+
 }
 
 //function to convert a generic (structured) javascript object to a html block
@@ -257,15 +435,19 @@ function jsObject2HtmlTable(ObjectArr, JqueryHtmlElement, tableColHeadingsArr) {
 
 /*********************** DISPLAY FUNCTIONS **************** */
 
+
+
+
 /*********************** RUN WITH PAGE LOAD ************************************ */
-//apifetch_FlightData();
-//apifetch_AirportData();
-apifetch_NearestAirport('Melbourne');
-apifetch_amedeous_w_oAuth();
-//apifetch_AirportData_Airportdb("MEL")
-getFromLocalStorage();
-apifetch_WeatherData();
+$(function Initialise() {
+    //DateInputELs.val(dayjs());
+    DateInputELs.datepicker({dateFormat: "yy-mm-dd", currentText: "Now"});
+    getFromLocalStorage();
 
+    //apifetch_NearestAirport('Melbourne');
+    //apifetch_FlightOffers();
+    //apifetch_WeatherData();
 
+})
 
 

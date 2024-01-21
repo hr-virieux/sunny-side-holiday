@@ -6,7 +6,11 @@
     --font-size-large: 30px;
 }
 
-/* Resetting default settings */
+.ui-datepicker{
+    background-color: white;
+}
+
+/* Resetting default settings for navigation */
 .navbar,
 .navbar ul,
 .navbar li,
@@ -15,12 +19,11 @@
     padding: 0;
     list-style: none;
     text-decoration: none;
-    font-size: var(--font-size-large);
 }
 
+/* Styling for the navigation bar */
 .navbar {
     background-color: var(--primary-color);
-    padding: 10px;
     text-align: center;
 }
 
@@ -37,6 +40,7 @@
     color: var(--background-color);
     font-weight: bold;
     text-transform: uppercase;
+    font-size: var(--font-size-large);
 }
 
 .navbar a:hover, .navbar a:focus {
@@ -44,18 +48,14 @@
     color: var(--hover-color);
 }
 
+/* Image styling */
 img {
     width: 100%;
     height: auto;
     object-fit: cover;
 }
 
-/* Section 1 - Form styling */
-h1 {
-    text-align: center;
-    color: var(--text-color);
-}
-
+/* Form and input styling */
 form {
     max-width: 400px;
     margin: 0 auto;
@@ -91,11 +91,30 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 
 /* Footer styling */
 .footer {
-    padding: 30px;
-    clear: both;
+    padding: 10px;
     text-align: center;
+    background-color: var(--primary-color);
+    color: var(--background-color);
 }
 
 .footer h2 {
-    font-size: 20px;
+    font-size: 15px;
+}
+
+/* Output Boxes Styling */
+#flightInfoOutput, #weatherInfoOutput {
+    background-color: var(--background-color);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Unhide class to show output boxes */
+.unhide {
+    display: block;
+}
+
+/* Output Boxes Styling */
+#flightInfoOffers, #flightInfoOutput, #weatherInfoOutput {
+    max-height: 500px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 20px; /* Space between boxes */
 }

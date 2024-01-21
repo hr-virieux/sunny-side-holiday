@@ -111,3 +111,10 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 .unhide {
     display: block;
 }
+
+/* Output Boxes Styling */
+#flightInfoOffers, #flightInfoOutput, #weatherInfoOutput {
+    max-height: 500px; /* Adjust the height as needed */
+    overflow-y: auto; /* Enable vertical scrolling */
+    margin-bottom: 20px; /* Space between boxes */
+}

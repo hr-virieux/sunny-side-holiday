@@ -21,12 +21,15 @@
     text-decoration: none;
 }
 
+
 /* Styling for the navigation bar */
 .navbar {
     background-color: var(--primary-color);
     text-align: center;
 }
-
+.max-w-md {
+    max-width: 85%;
+}
 .navbar ul {
     display: flex;
     justify-content: center;

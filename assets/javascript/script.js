@@ -302,11 +302,9 @@ function processWeatherData(data) {
         arr.push({});
         for (var i in data.daily) {
             if (i === 'time') {
-                arr[j][i] = dayjs(data.daily[i][j]).format('DD/MM/YYYY');
-            }
-            else
-            {
-            arr[j][i] = data.daily[i][j];
+                arr[j][i] = dayjs.unix(data.daily[i][j]).format('DD/MM/YYYY');
+            } else {
+                arr[j][i] = data.daily[i][j];
             }
         }
     }

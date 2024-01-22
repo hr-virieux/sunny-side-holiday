@@ -10,6 +10,7 @@ departureAirportEL = $('#departureAirport');
 arrivalAirportEL = $('#arrivalAirport');
 userData = {};
 
+
 //Global Verables
 var storageKey = 'sunny-side-holiday';
 var AVIATIONSTACK_LIVEDATA_ENABLE = false; //switch between live api data and stored data
@@ -307,17 +308,17 @@ function getCoordsFromIATAcode(iata) {
 function processWeatherData(data) {
     var arr = [];
     for (var j = 0; j < data.daily.time.length; j++) {
-        arr.push({});
-        for (var i in data.daily) {
-            if (i === 'time') {
-                arr[j][i] = dayjs.unix(data.daily[i][j]).format('DD/MM/YYYY');
-            } else {
-                arr[j][i] = data.daily[i][j];
-            }
-        }
+        var dayData = {
+            Date: dayjs.unix(data.daily.time[j]).format('DD/MM/YY'),
+            Temperature: data.daily.temperature_2m_max[j] + "°C",
+            Wind: data.daily.wind_speed_10m_max[j] + " m/s",
+            Rain: data.daily.precipitation_sum[j] + " mm"
+        };
+        arr.push(dayData);
     }
     jsObject2HtmlTable(arr, WeatherDataOutputEL);
 }
+
 
 // Funtion for the flight data and fetch informaion and display information in HTML - mark
 //input - user input (departure and arrival airport / flight number) (dates) 

@@ -310,13 +310,39 @@ function processWeatherData(data) {
     for (var j = 0; j < data.daily.time.length; j++) {
         var dayData = {
             Date: dayjs.unix(data.daily.time[j]).format('DD/MM/YY'),
-            Temperature: data.daily.temperature_2m_max[j] + "°C",
+            Temperature: data.daily.temperature_2m_min[j] + "°C / " + data.daily.temperature_2m_max[j] + "°C",
             Wind: data.daily.wind_speed_10m_max[j] + " m/s",
             Rain: data.daily.precipitation_sum[j] + " mm"
         };
         arr.push(dayData);
     }
-    jsObject2HtmlTable(arr, WeatherDataOutputEL);
+    for(var i= 0; i<arr.length;i++)
+    {
+        var div = $('<div></div>').addClass('weatherCard');
+        var ul = $('<ul></ul>');
+        li.text('Day ' + i+1 +' of holiday');
+        li.addClass('Day header')
+        for(var j in arr[i])
+        {
+            var li = $('<li></li>')
+            if(j =='Date')
+            {
+                li.text('Day ' + i+1 +' of holiday');
+                li.addClass('Day header')
+            }
+            else
+            {
+            li.text(j+' - '+arr[i][j]);
+            }
+            ul.append(li);
+        }
+        div.append(ul);
+
+
+    }
+    WeatherDataOutputEL.empty();
+    WeatherDataOutputEL.append(div);
+    //jsObject2HtmlTable(arr, WeatherDataOutputEL);
 }
 
 

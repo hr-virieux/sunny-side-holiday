@@ -16,8 +16,9 @@ Sunny Side Holiday Planner is an interactive web application designed to assist 
 2. **CSS:** Applied for basic styling and layout of web pages.
 3. **Tailwind CSS:** A utility-first CSS framework used for designing custom and responsive interfaces with speed and efficiency.
 4. **JavaScript (with jQuery):** For dynamic content manipulation and API interactions.
-5. **API 1:** ...
-6. **API 2:** ...
+5. **API 1:** https://developers.amadeus.com/
+6. **API 2:** https://api.open-meteo.com/
+6. **API 3:** https://api.api-ninjas.com/
 7. **Local Storage:** Employed for storing user input and preferences between sessions.
 
 ## Installation and Setup

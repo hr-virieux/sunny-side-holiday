@@ -328,8 +328,23 @@ function processFlightOfferData(data) {
 // display list of available flights to purchase
 function processFlightData(data) {
     //***TODO**** - complete function to display flight data
-
-    jsObject2HtmlTable(data, FlightDataOutputEL);
+    $('#FlightInfo-FlightNumber').text(data.data[0].flightDesignator.carrierCode + data.data[0].flightDesignator.flightNumber);
+    $('#FlightInfo-DepatureTime').text(dayjs(data.data[0].flightPoints[0].departure.timings[0].value).format('DD/MM/YYYY hh:mm A'));
+    $('#FlightInfo-ArrivalTime').text(dayjs(data.data[0].flightPoints[data.data[0].flightPoints.length-1].arrival.timings[0].value).format('DD/MM/YYYY hh:mm A'));
+     var AircraftType = [];
+     var duration = [];
+    for(var i=0;i<data.data[0].legs.length;i++)
+    {
+        duration.push(data.data[0].legs[i].scheduledLegDuration); 
+        AircraftType.push(data.data[0].legs[i].aircraftEquipment.aircraftType);
+    }
+    $('#FlightInfo-FlightDuration').text(duration.join(', '));
+    $('#FlightInfo-AircraftType').text(AircraftType.join(', '));
+    console.log(data.data[0].legs[data.data[0].legs.length-1].offPointIataCode);
+    $('#FlightInfo-ArrivalAirport').text(data.data[0].legs[data.data[0].legs.length-1].offPointIataCode);
+    console.log(data.data[0].legs[0].boardPointIataCode);
+    $('#FlightInfo-DepartureAirport').text(data.data[0].legs[0].boardPointIataCode);
+    
 }
 
 function Array2HtmlUnorderedList(arr, HtmlElement, liClass) {

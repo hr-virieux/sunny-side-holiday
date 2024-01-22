@@ -316,18 +316,17 @@ function processWeatherData(data) {
         };
         arr.push(dayData);
     }
+    WeatherDataOutputEL.empty();
     for(var i= 0; i<arr.length;i++)
     {
         var div = $('<div></div>').addClass('weatherCard');
         var ul = $('<ul></ul>');
-        li.text('Day ' + i+1 +' of holiday');
-        li.addClass('Day header')
         for(var j in arr[i])
         {
             var li = $('<li></li>')
             if(j =='Date')
             {
-                li.text('Day ' + i+1 +' of holiday');
+                li.text('Day ' + parseInt(i+1) +' of holiday ('+ arr[i][j]+')');
                 li.addClass('Day header')
             }
             else
@@ -337,11 +336,11 @@ function processWeatherData(data) {
             ul.append(li);
         }
         div.append(ul);
-
+        WeatherDataOutputEL.append(div);
 
     }
-    WeatherDataOutputEL.empty();
-    WeatherDataOutputEL.append(div);
+    
+    
     //jsObject2HtmlTable(arr, WeatherDataOutputEL);
 }
 

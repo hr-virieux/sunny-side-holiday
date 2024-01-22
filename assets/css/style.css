@@ -92,6 +92,7 @@ input[type="submit"]:hover, input[type="submit"]:focus {
     background-color: var(--hover-color);
 }
 
+/* Number of flights sub-menu */
 .flight-offers-header {
     display: flex;
     flex-direction: column;
@@ -99,11 +100,11 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 }
 
 .flight-display-control {
-    margin-top: 10px; /* Adjust the spacing as needed */
+    margin-top: 10px;
 }
 
 .flight-display-control select {
-    width: 50%; /* Reduces the width of the select dropdown to 50% */
+    width: 50%;
 }
 
 /* Footer styling */

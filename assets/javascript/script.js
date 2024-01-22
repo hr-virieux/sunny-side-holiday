@@ -330,6 +330,10 @@ function processFlightOfferData(data) {
     {
         var numToDisplay = 5;
     }
+    if(numToDisplay>= data.data.length)
+    {
+        numToDisplay = data.data.length;
+    };
     for(var i=0;i<numToDisplay;i++)
     {
         newArr.push(data.data[i]);

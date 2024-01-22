@@ -20,10 +20,15 @@ var StoredAirportData = [];
 //var AirportData = {};
 
 /*********************** EVENT HANDLERS****************************************** */
+$(
+UserSearchInputEL.on("submit",userSearch)
+
+//$('#fm-numofFlights').on("click",userSearch)
+);
 //event listener for submit button - Mark
 //input - Click from the user
 //output - call the next function down
-UserSearchInputEL.on("submit", function (event) {
+function userSearch() {
     event.preventDefault();
 
     var departureAirportCode = '';
@@ -83,7 +88,10 @@ UserSearchInputEL.on("submit", function (event) {
 
     //apifetch_FlightData(formData);
     //FlightInforEL.hide();
-});
+};
+
+
+
 
 //event handler to catch user airport selection
 $('#departureAirport-check').on('click', function (event) {
@@ -317,7 +325,12 @@ function processWeatherData(data) {
 function processFlightOfferData(data) {
     //***TODO**** - complete function to display flight data
     var newArr = []
-    for(var i=0;i<10;i++)
+    var numToDisplay = parseInt($('#js-numOfFlightOffersToDisplay').val());
+    if(numToDisplay === undefined)
+    {
+        var numToDisplay = 5;
+    }
+    for(var i=0;i<numToDisplay;i++)
     {
         newArr.push(data.data[i]);
     }
@@ -455,6 +468,12 @@ function jsObject2HtmlTable(ObjectArr, JqueryHtmlElement, tableColHeadingsArr) {
 $(function Initialise() {
     //DateInputELs.val(dayjs());
     DateInputELs.datepicker({dateFormat: "yy-mm-dd", currentText: "Now"});
+
+    var numOfFlights = ['1','2','3','4','5','10','15','20'];
+    $('#js-numOfFlightOffersToDisplay').autocomplete({
+        source: numOfFlights
+        });
+
     getFromLocalStorage();
 
     //apifetch_NearestAirport('Melbourne');

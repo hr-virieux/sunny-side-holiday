@@ -88,8 +88,22 @@
     <section class="output-section py-6">
         <!-- Flight Offers Output Box -->
         <div id="flightInfoOffers" class="mx-auto p-4 border border-gray-300 rounded my-4 max-w-md">
-            <h2 class="text-lg font-semibold">Available Flights</h2>
+            <h2 class="text-lg font-semibold">Available Flights</h2> 
+            <form action="#" id="fm-numofFlights">
+                <label for="numOfFlights" class="block text-sm font-medium">Choose how many flights to display:</label>
+                <select class="border border-gray-300 rounded p-2 w-full" name="numOfFlights" id="js-numOfFlightOffersToDisplay">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option selected="selected">5</option>
+                    <option>10</option>
+                    <option>15</option>
+                    <option>20</option>
+                </select>
+            </form>
             <div id="js-flightOfferData"><!-- Flight data will be inserted here --></div>
+            
 
         </div>
         <!-- Flight Information Output Box -->

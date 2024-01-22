@@ -121,3 +121,28 @@ input[type="submit"]:hover, input[type="submit"]:focus {
     overflow-y: auto; /* Enable vertical scrolling */
     margin-bottom: 20px; /* Space between boxes */
 }
+
+/* Table Object Styling*/
+#JsObjectTable { 
+    width: 100%;
+    border-collapse: collapse; /* Table borders */
+    margin-top: 20px;
+}
+
+#JsObjectTable th, #JsObjectTable td {
+    border: 1px solid #dddddd;
+    padding: 8px;
+    text-align: center;
+}
+
+#JsObjectTable .table-col-heading {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+}
+
+
+
+
+
+

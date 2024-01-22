@@ -337,8 +337,27 @@ function processFlightOfferData(data) {
     };
     for(var i=0;i<numToDisplay;i++)
     {
-        newArr.push(data.data[i]);
+        console.log(data.data[i]);
+        var displayObj = {};
+        displayObj['Departure Time'] = data.data[i].itineraries[0].segments[0].departure.at;
+        displayObj['Arrival Time'] = data.data[i].itineraries[0].segments[0].arrival.at;
+        displayObj['Airline'] = data.data[i].validatingAirlineCodes[0];
+        displayObj['Available Seats'] = data.data[i].numberOfBookableSeats;
+        displayObj['Price'] = data.data[i].price.base +'('+data.data[i].price.currency+')';
+        displayObj['Number of Layovers'] = data.data[i].itineraries[0].segments.length-1;
+        if(displayObj['Number of Layovers'] > 0)
+        {
+            displayObj['Layover Details'] = "#";
+             displayObj['Flight Duration'] = "#";
+        }
+        displayObj['return'] = !data.data[i].oneWay;
+       
+        
+        //data.data[i]
+        newArr.push(displayObj);
     }
+
+
 
     jsObject2HtmlTable(newArr, FlightOfferDataOutputEL);
 }

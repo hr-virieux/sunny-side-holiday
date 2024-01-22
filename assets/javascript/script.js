@@ -49,7 +49,7 @@ UserSearchInputEL.on("submit", function (event) {
         departureAirportCode = formData.departureAirport.split('-')[0];
     }
     else{
-        //apifetch_NearestAirport(formData.departureAirport, $('#departureAirport-check'));
+        apifetch_NearestAirport(formData.departureAirport, $('#departureAirport-check'));
     }
     if (formData.arrivalAirport.charAt(3) == '-') {
         arrivalAirportCode = formData.arrivalAirport.split('-')[0];
@@ -347,23 +347,6 @@ function processFlightData(data) {
     console.log(data.data[0].legs[0].boardPointIataCode);
     $('#FlightInfo-DepartureAirport').text(data.data[0].legs[0].boardPointIataCode);
     
-    
-    /*
-    
-    var departureInfo = $('<div></div>');
-    departureInfo.attr('id','flightInfo-departure');
-    departureInfo.addClass('flightInfo');
-    var ul = $('<ul></ul>');
-    var li = ul.append($('<li></li>').append($('<h3><h3>'));
-
-
-    FlightDataOutputEL.append(departureInfo);
-    arrivalInfo.attr('id','flightInfo-departure');
-    arrivalInfo.addClass('flightInfo');
-    var ul = $('<ul></ul>');
-    var li = $('<li></li>');
-    FlightDataOutputEL.append(arrivalInfo);
-    jsObject2HtmlTable(data, FlightDataOutputEL);*/
 }
 
 function Array2HtmlUnorderedList(arr, HtmlElement, liClass) {

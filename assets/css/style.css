@@ -10,11 +10,6 @@
     background-color: white;
 }
 
-.ui-autocomplete {
-    background-color: white;
-}
-
-
 /* Resetting default settings for navigation */
 .navbar,
 .navbar ul,
@@ -102,6 +97,12 @@ input[type="submit"]:hover,
 input[type="submit"]:focus {
     background-color: var(--hover-color);
 }
+
+#clearButton {
+    background-color: lightgrey;
+    color: black;
+}
+
 
 /* Footer styling */
 .footer {

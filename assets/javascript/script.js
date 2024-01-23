@@ -11,6 +11,8 @@ arrivalAirportEL = $('#arrivalAirport');
 userData = {};
 
 
+
+
 //Global Verables
 var storageKey = 'sunny-side-holiday';
 var AVIATIONSTACK_LIVEDATA_ENABLE = false; //switch between live api data and stored data
@@ -548,3 +550,13 @@ $(function Initialise() {
 
 })
 
+$('#clearButton').on('click',clearForm);
+
+//Clear form button
+function clearForm() {
+    document.getElementById('departureAirport').value = '';
+    document.getElementById('arrivalAirport').value = '';
+    document.getElementById('departureDate').value = '';
+    document.getElementById('numOfAdults').value = '';
+    document.getElementById('flightNumber').value = '';
+}

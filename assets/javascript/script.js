@@ -21,11 +21,33 @@ var StoredAirportData = [];
 //var AirportData = {};
 
 /*********************** EVENT HANDLERS****************************************** */
+
 $(
     UserSearchInputEL.on("submit", userSearch)
 
     //$('#fm-numofFlights').on("click",userSearch)
 );
+=======
+UserSearchInputEL.on("submit",userSearch);
+
+departureAirportEL.on('keydown',function () {
+    var text = departureAirportEL.val();
+    //apifetch_NearestAirport(text, $('#departureAirport-check'));
+    apifetch_NearestAirport(text, departureAirportEL);
+
+});
+
+arrivalAirportEL.on('keydown',function () {
+    var text = arrivalAirportEL.val();
+    //apifetch_NearestAirport(text, $('#arrivalAirport-check'));
+    apifetch_NearestAirport(text, arrivalAirportEL);
+
+
+});
+
+//$('#fm-numofFlights').on("click",userSearch)
+
+
 //event listener for submit button - Mark
 //input - Click from the user
 //output - call the next function down
@@ -54,14 +76,24 @@ function userSearch() {
     if (formData.departureAirport.charAt(3) == '-') {
         departureAirportCode = formData.departureAirport.split('-')[0];
     }
+
     else {
         apifetch_NearestAirport(formData.departureAirport, $('#departureAirport-check'));
+=======
+    else{
+        //apifetch_NearestAirport(formData.departureAirport, $('#departureAirport-check'));
+
     }
     if (formData.arrivalAirport.charAt(3) == '-') {
         arrivalAirportCode = formData.arrivalAirport.split('-')[0];
         apifetch_WeatherData_fromIATA(arrivalAirportCode);
+
     } else {
         apifetch_NearestAirport(formData.arrivalAirport, $('#arrivalAirport-check'));
+=======
+    }else{
+        //apifetch_NearestAirport(formData.arrivalAirport, $('#arrivalAirport-check'));
+
     }
 
     if (formData.flightNumber) {
@@ -121,7 +153,11 @@ function apifetch_NearestAirport(name, HtmlElement) {
             //***TODO**** - remove console log when finished!!!
             console.log('Nearest Airport', data); // Log the API data
             //***TODO**** - Can we make this an auto complete or links to select airport!!!
-            Array2HtmlUnorderedList(getAirportNamesArr(data), HtmlElement);
+            //Array2HtmlUnorderedList(getAirportNamesArr(data), HtmlElement);
+            HtmlElement.autocomplete({
+                source: getAirportNamesArr(data)
+              });
+
         }).catch(function (err) {
             console.log('Unable to connect to api.api-ninjas.com', err); // Log any errors
         });
@@ -136,9 +172,9 @@ function apifetch_FlightOffers(search) {
 
     //***TODO**** - change this url to match the required data call from amadeous.com!!!
     var apiURL = 'https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=' + search.departureAirport + '&destinationLocationCode=' + search.arrivalAirport + '&departureDate=' + search.departureDate + '&adults=' + search.adults;
-
+    
     fetch(authUrl, {
-        method: 'POST',
+        method: 'GET',
         body: 'grant_type=client_credentials&client_id=' + key + '&client_secret=' + secret,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -148,6 +184,7 @@ function apifetch_FlightOffers(search) {
     }).then(function (data) {
         // start main API call using token from above
         return fetch(apiURL, {
+            method: 'POST',
             headers: {
                 'Authorization': data.token_type + ' ' + data.access_token,
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -223,7 +260,8 @@ function apifetch_WeatherData_fromIATA(IATA) {
             console.log('weather Airport', data); // Log the API data
             //***TODO**** - Can we make this an auto complete or links to select airport!!!
             //fetch weather Data
-            var weatherApiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + data[0].latitude + '&longitude=' + data[0].longitude + '&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
+            //var weatherApiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + data[0].latitude + '&longitude=' + data[0].longitude + '&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
+            var weatherApiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + data[0].latitude + '&longitude=' + data[0].longitude + '&daily=temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,wind_speed_10m_max&timeformat=unixtime&forecast_days=16'
 
             if (OPENMETEO_LIVEDATA_ENABLE) {
                 fetch(weatherApiUrl, {
@@ -308,17 +346,64 @@ function getCoordsFromIATAcode(iata) {
 //input -  Current Day Weather AKA The data information Current weather.
 //output - Future 5 days  forcast -
 function processWeatherData(data) {
+    //var isBetween = require('dayjs/plugin/isBetween')
+    //dayjs.extend(isBetween)
+
     var arr = [];
+    /*if(dayjs($('#FlightInfo-ArrivalTime').val).isValid())
+    {
+        var startDate = dayjs($('#FlightInfo-ArrivalTime').val);
+    }
+    else */
+    console.log($('#departureDate').val());
+    if((dayjs($('#departureDate').val(),'YY-MM-DD')).isValid())
+    {
+        var startDate = dayjs($('#departureDate').val(),'YY-MM-DD');
+    }
+    else
+    {
+        var startDate = dayjs();
+    }
+
+
     for (var j = 0; j < data.daily.time.length; j++) {
+        if(dayjs.unix(data.daily.time[j]).isBetween(startDate, startDate.add(4, 'day'), 'day', '[]'))//date within required time
+        {
         var dayData = {
             Date: dayjs.unix(data.daily.time[j]).format('DD/MM/YY'),
-            Temperature: data.daily.temperature_2m_max[j] + "°C",
+            Temperature: data.daily.temperature_2m_min[j] + "°C / " + data.daily.temperature_2m_max[j] + "°C",
             Wind: data.daily.wind_speed_10m_max[j] + " m/s",
             Rain: data.daily.precipitation_sum[j] + " mm"
         };
         arr.push(dayData);
     }
-    jsObject2HtmlTable(arr, WeatherDataOutputEL);
+    }
+    WeatherDataOutputEL.empty();
+    for(var i= 0; i<arr.length;i++)
+    {
+        var div = $('<div></div>').addClass('weatherCard');
+        var ul = $('<ul></ul>');
+        for(var j in arr[i])
+        {
+            var li = $('<li></li>')
+            if(j =='Date')
+            {
+                li.text('Day ' + parseInt(i+1) +' of holiday ('+ arr[i][j]+')');
+                li.addClass('Day header')
+            }
+            else
+            {
+            li.text(j+' - '+arr[i][j]);
+            }
+            ul.append(li);
+        }
+        div.append(ul);
+        WeatherDataOutputEL.append(div);
+
+    }
+    
+    
+    //jsObject2HtmlTable(arr, WeatherDataOutputEL);
 }
 
 
@@ -501,6 +586,14 @@ $(function Initialise() {
     $('#js-numOfFlightOffersToDisplay').autocomplete({
         source: numOfFlights
     });
+
+    departureAirportEL.autocomplete({
+            source: departureAirportAutocomplete
+          });
+
+    arrivalAirportEL.autocomplete({
+        source: arrivalAirportAutocomplete
+      });
 
     getFromLocalStorage();
 

@@ -69,6 +69,7 @@
     <section class="output-section py-6">
         <!-- Flight Offers Output Box -->
         <div id="flightInfoOffers" class="mx-auto p-4 border border-gray-300 rounded my-4 max-w-md">
+
             <h2 class="text-lg font-semibold" id="center">Available Flights</h2>
             <form action="#" id="fm-numofFlights">
                 <label for="numOfFlights" class="block text-sm font-medium">Choose how many flights to display:</label>
@@ -86,6 +87,27 @@
             </form>
             <div id="js-flightOfferData"><!-- Flight data will be inserted here --></div>
 
+
+=======
+            <div class="flight-offers-header">
+                <h2 class="text-lg font-semibold">Available Flights:</h2>
+                <div class="flight-display-control">
+                    <form action="#" id="fm-numofFlights">
+                        <label for="numOfFlights" class="block text-sm font-medium">No. of flights to display:</label>
+                        <select class="border border-gray-300 rounded p-2 w-1/2" name="numOfFlights" id="js-numOfFlightOffersToDisplay">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option selected="selected">5</option>
+                            <option>10</option>
+                            <option>15</option>
+                            <option>20</option>
+                        </select>
+                    </form>
+                </div>
+            </div>
+            <div id="js-flightOfferData"><!-- Flight data will be inserted here --></div>
 
         </div>
         <!-- Flight Information Output Box -->
@@ -130,6 +152,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script><!--include Jquery-->
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script> <!--include Jquery UI-->
     <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.min.js"></script> <!--include day JS-->
+    <script src="https://cdn.jsdelivr.net/npm/dayjs@1/plugin/isBetween.js"></script>
+<script>dayjs.extend(window.dayjs_plugin_isBetween)</script>
     <script src="./assets/javascript/API_test-data.js"></script>
     <script src="./assets/javascript/script.js"></script>
 </body>

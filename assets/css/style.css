@@ -98,6 +98,21 @@ input[type="submit"]:focus {
     background-color: var(--hover-color);
 }
 
+/* Number of flights sub-menu */
+.flight-offers-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.flight-display-control {
+    margin-top: 10px;
+}
+
+.flight-display-control select {
+    width: 50%;
+}
+
 /* Footer styling */
 .footer {
     padding: 10px;
@@ -188,3 +203,5 @@ input[type="submit"]:focus {
 #center {
     text-align: center;
 }
+=======
+

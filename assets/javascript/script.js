@@ -22,9 +22,9 @@ var StoredAirportData = [];
 
 /*********************** EVENT HANDLERS****************************************** */
 $(
-UserSearchInputEL.on("submit",userSearch)
+    UserSearchInputEL.on("submit", userSearch)
 
-//$('#fm-numofFlights').on("click",userSearch)
+    //$('#fm-numofFlights').on("click",userSearch)
 );
 //event listener for submit button - Mark
 //input - Click from the user
@@ -48,43 +48,45 @@ function userSearch() {
     // console.log(event);
     StoreFormToLocalStorage(formData);
     userData = formData;
-  
-    
+
+
 
     if (formData.departureAirport.charAt(3) == '-') {
         departureAirportCode = formData.departureAirport.split('-')[0];
     }
-    else{
+    else {
         apifetch_NearestAirport(formData.departureAirport, $('#departureAirport-check'));
     }
     if (formData.arrivalAirport.charAt(3) == '-') {
         arrivalAirportCode = formData.arrivalAirport.split('-')[0];
         apifetch_WeatherData_fromIATA(arrivalAirportCode);
-    }else{
+    } else {
         apifetch_NearestAirport(formData.arrivalAirport, $('#arrivalAirport-check'));
     }
 
     if (formData.flightNumber) {
-        if(formData.flightNumber != '' && formData.departureDate !='')
-        //render flight data
-            var search = {carrierCode: formData.flightNumber.slice(0,2), 
-                flightNumber: formData.flightNumber.slice(2,6), 
-                departureDate: dayjs(formData.departureDate,'YY-MM-DD').format('YYYY-MM-DD')};
+        if (formData.flightNumber != '' && formData.departureDate != '')
+            //render flight data
+            var search = {
+                carrierCode: formData.flightNumber.slice(0, 2),
+                flightNumber: formData.flightNumber.slice(2, 6),
+                departureDate: dayjs(formData.departureDate, 'YY-MM-DD').format('YYYY-MM-DD')
+            };
 
         apifetch_flightData(search);
-            }
-    
-        //load list of flights from departure city to arrival city on date
-        if (arrivalAirportCode != '' && departureAirportCode != '' && formData.departureDate && formData.numOfAdults) {
-            var search = {
-                departureAirport: departureAirportCode,
-                arrivalAirport: arrivalAirportCode,
-                departureDate: dayjs(formData.departureDate,'YY-MM-DD').format('YYYY-MM-DD'),
-                adults: formData.numOfAdults
-            };
-            apifetch_FlightOffers(search, FlightOfferDataOutputEL);
-        }
-    
+    }
+
+    //load list of flights from departure city to arrival city on date
+    if (arrivalAirportCode != '' && departureAirportCode != '' && formData.departureDate && formData.numOfAdults) {
+        var search = {
+            departureAirport: departureAirportCode,
+            arrivalAirport: arrivalAirportCode,
+            departureDate: dayjs(formData.departureDate, 'YY-MM-DD').format('YYYY-MM-DD'),
+            adults: formData.numOfAdults
+        };
+        apifetch_FlightOffers(search, FlightOfferDataOutputEL);
+    }
+
 
 
     //apifetch_FlightData(formData);
@@ -174,7 +176,7 @@ function apifetch_flightData(search) {
     var secret = 'bsQ4g4TKaWbKbOUq';
 
     //***TODO**** - change this url to match the required data call from amadeous.com!!!
-    var apiURL = 'https://test.api.amadeus.com/v2/schedule/flights?carrierCode='+search.carrierCode+'&flightNumber='+search.flightNumber+'&scheduledDepartureDate='+search.departureDate;
+    var apiURL = 'https://test.api.amadeus.com/v2/schedule/flights?carrierCode=' + search.carrierCode + '&flightNumber=' + search.flightNumber + '&scheduledDepartureDate=' + search.departureDate;
 
     fetch(authUrl, {
         method: 'POST',
@@ -327,32 +329,28 @@ function processFlightOfferData(data) {
     //***TODO**** - complete function to display flight data
     var newArr = []
     var numToDisplay = parseInt($('#js-numOfFlightOffersToDisplay').val());
-    if(numToDisplay === undefined)
-    {
+    if (numToDisplay === undefined) {
         var numToDisplay = 5;
     }
-    if(numToDisplay>= data.data.length)
-    {
+    if (numToDisplay >= data.data.length) {
         numToDisplay = data.data.length;
     };
-    for(var i=0;i<numToDisplay;i++)
-    {
+    for (var i = 0; i < numToDisplay; i++) {
         console.log(data.data[i]);
         var displayObj = {};
         displayObj['Departure Time'] = data.data[i].itineraries[0].segments[0].departure.at;
         displayObj['Arrival Time'] = data.data[i].itineraries[0].segments[0].arrival.at;
         displayObj['Airline'] = data.data[i].validatingAirlineCodes[0];
         displayObj['Available Seats'] = data.data[i].numberOfBookableSeats;
-        displayObj['Price'] = data.data[i].price.base +'('+data.data[i].price.currency+')';
-        displayObj['Number of Layovers'] = data.data[i].itineraries[0].segments.length-1;
-        if(displayObj['Number of Layovers'] > 0)
-        {
+        displayObj['Price'] = data.data[i].price.base + '(' + data.data[i].price.currency + ')';
+        displayObj['Number of Layovers'] = data.data[i].itineraries[0].segments.length - 1;
+        if (displayObj['Number of Layovers'] > 0) {
             displayObj['Layover Details'] = "#";
-             displayObj['Flight Duration'] = "#";
+            displayObj['Flight Duration'] = "#";
         }
         displayObj['return'] = !data.data[i].oneWay;
-       
-        
+
+
         //data.data[i]
         newArr.push(displayObj);
     }
@@ -364,24 +362,30 @@ function processFlightOfferData(data) {
 
 // display list of available flights to purchase
 function processFlightData(data) {
-    //***TODO**** - complete function to display flight data
-    $('#FlightInfo-FlightNumber').text(data.data[0].flightDesignator.carrierCode + data.data[0].flightDesignator.flightNumber);
-    $('#FlightInfo-DepatureTime').text(dayjs(data.data[0].flightPoints[0].departure.timings[0].value).format('DD/MM/YYYY hh:mm A'));
-    $('#FlightInfo-ArrivalTime').text(dayjs(data.data[0].flightPoints[data.data[0].flightPoints.length-1].arrival.timings[0].value).format('DD/MM/YYYY hh:mm A'));
-     var AircraftType = [];
-     var duration = [];
-    for(var i=0;i<data.data[0].legs.length;i++)
-    {
-        duration.push(data.data[0].legs[i].scheduledLegDuration); 
+    var flightNumber = data.data[0].flightDesignator.carrierCode + data.data[0].flightDesignator.flightNumber;
+
+    // Append Flight Number to existing content
+    $('#js-flightData').prepend('<h2 class="text-lg font-semibold"></h2>');
+    $('#FlightInfo-FlightNumber').append(flightNumber);
+
+    // Append other flight details to existing content
+    $('#FlightInfo-DepatureTime').append(dayjs(data.data[0].flightPoints[0].departure.timings[0].value).format('DD/MM/YYYY hh:mm A'));
+    $('#FlightInfo-ArrivalTime').append(dayjs(data.data[0].flightPoints[data.data[0].flightPoints.length - 1].arrival.timings[0].value).format('DD/MM/YYYY hh:mm A'));
+
+    var AircraftType = [];
+    var duration = [];
+
+    for (var i = 0; i < data.data[0].legs.length; i++) {
+        duration.push(data.data[0].legs[i].scheduledLegDuration);
         AircraftType.push(data.data[0].legs[i].aircraftEquipment.aircraftType);
     }
-    $('#FlightInfo-FlightDuration').text(duration.join(', '));
-    $('#FlightInfo-AircraftType').text(AircraftType.join(', '));
-    console.log(data.data[0].legs[data.data[0].legs.length-1].offPointIataCode);
-    $('#FlightInfo-ArrivalAirport').text(data.data[0].legs[data.data[0].legs.length-1].offPointIataCode);
-    console.log(data.data[0].legs[0].boardPointIataCode);
-    $('#FlightInfo-DepartureAirport').text(data.data[0].legs[0].boardPointIataCode);
-    
+
+    $('#FlightInfo-FlightDuration').append(duration.join(', '));
+    $('#FlightInfo-AircraftType').append(AircraftType.join(', '));
+
+    $('#FlightInfo-ArrivalAirport').append(data.data[0].legs[data.data[0].legs.length - 1].offPointIataCode);
+    $('#FlightInfo-DepartureAirport').append(data.data[0].legs[0].boardPointIataCode);
+
 }
 
 function Array2HtmlUnorderedList(arr, HtmlElement, liClass) {
@@ -491,12 +495,12 @@ function jsObject2HtmlTable(ObjectArr, JqueryHtmlElement, tableColHeadingsArr) {
 /*********************** RUN WITH PAGE LOAD ************************************ */
 $(function Initialise() {
     //DateInputELs.val(dayjs());
-    DateInputELs.datepicker({dateFormat: "yy-mm-dd", currentText: "Now"});
+    DateInputELs.datepicker({ dateFormat: "yy-mm-dd", currentText: "Now" });
 
-    var numOfFlights = ['1','2','3','4','5','10','15','20'];
+    var numOfFlights = ['1', '2', '3', '4', '5', '10', '15', '20'];
     $('#js-numOfFlightOffersToDisplay').autocomplete({
         source: numOfFlights
-        });
+    });
 
     getFromLocalStorage();
 

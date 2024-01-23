@@ -6,7 +6,7 @@
     --font-size-large: 30px;
 }
 
-.ui-datepicker{
+.ui-datepicker {
     background-color: white;
 }
 
@@ -27,16 +27,19 @@
     background-color: var(--primary-color);
     text-align: center;
 }
+
 .max-w-md {
     max-width: 85%;
 }
+
 .navbar ul {
     display: flex;
     justify-content: center;
 }
 
 .navbar li {
-    margin: 0 50px; /* Even spacing for all nav items */
+    margin: 0 50px;
+    /* Even spacing for all nav items */
 }
 
 .navbar a {
@@ -46,7 +49,8 @@
     font-size: var(--font-size-large);
 }
 
-.navbar a:hover, .navbar a:focus {
+.navbar a:hover,
+.navbar a:focus {
     background-color: var(--background-color);
     color: var(--hover-color);
 }
@@ -69,7 +73,8 @@ label {
     margin-top: 10px;
 }
 
-input[type="text"], input[type="submit"] {
+input[type="text"],
+input[type="submit"] {
     width: 100%;
     padding: 8px;
     margin-top: 5px;
@@ -88,23 +93,9 @@ input[type="submit"] {
     cursor: pointer;
 }
 
-input[type="submit"]:hover, input[type="submit"]:focus {
+input[type="submit"]:hover,
+input[type="submit"]:focus {
     background-color: var(--hover-color);
-}
-
-/* Number of flights sub-menu */
-.flight-offers-header {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
-
-.flight-display-control {
-    margin-top: 10px;
-}
-
-.flight-display-control select {
-    width: 50%;
 }
 
 /* Footer styling */
@@ -120,7 +111,8 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 }
 
 /* Output Boxes Styling */
-#flightInfoOutput, #weatherInfoOutput {
+#flightInfoOutput,
+#weatherInfoOutput {
     background-color: var(--background-color);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -131,20 +123,27 @@ input[type="submit"]:hover, input[type="submit"]:focus {
 }
 
 /* Output Boxes Styling */
-#flightInfoOffers, #flightInfoOutput, #weatherInfoOutput {
-    max-height: 500px; /* Adjust the height as needed */
-    overflow-y: auto; /* Enable vertical scrolling */
-    margin-bottom: 20px; /* Space between boxes */
+#flightInfoOffers,
+#flightInfoOutput,
+#weatherInfoOutput {
+    max-height: 500px;
+    /* Adjust the height as needed */
+    overflow-y: auto;
+    /* Enable vertical scrolling */
+    margin-bottom: 20px;
+    /* Space between boxes */
 }
 
 /* Table Object Styling*/
-#JsObjectTable { 
+#JsObjectTable {
     width: 100%;
-    border-collapse: collapse; /* Table borders */
+    border-collapse: collapse;
+    /* Table borders */
     margin-top: 20px;
 }
 
-#JsObjectTable th, #JsObjectTable td {
+#JsObjectTable th,
+#JsObjectTable td {
     border: 1px solid #dddddd;
     padding: 8px;
     text-align: center;
@@ -154,4 +153,38 @@ input[type="submit"]:hover, input[type="submit"]:focus {
     background-color: var(--primary-color);
     color: white;
     font-weight: bold;
+}
+
+#flightInfoOutput {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+}
+
+.flight-box {
+    background-color: var(--hover-color);
+    color: white;
+    display: flex;
+    margin: 0 auto;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    flex-direction: column;
+    padding: 3%;
+
+}
+
+.flight-box>div {
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+#center {
+    text-align: center;
 }

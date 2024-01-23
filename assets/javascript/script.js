@@ -154,7 +154,7 @@ function apifetch_FlightOffers(search) {
     var apiURL = 'https://test.api.amadeus.com/v2/shopping/flight-offers?originLocationCode=' + search.departureAirport + '&destinationLocationCode=' + search.arrivalAirport + '&departureDate=' + search.departureDate + '&adults=' + search.adults;
     
     fetch(authUrl, {
-        method: 'GET',
+        method: 'POST',
         body: 'grant_type=client_credentials&client_id=' + key + '&client_secret=' + secret,
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded'
@@ -164,7 +164,7 @@ function apifetch_FlightOffers(search) {
     }).then(function (data) {
         // start main API call using token from above
         return fetch(apiURL, {
-            method: 'POST',
+            /*method: 'POST',*/
             headers: {
                 'Authorization': data.token_type + ' ' + data.access_token,
                 'Content-Type': 'application/x-www-form-urlencoded'
@@ -565,13 +565,13 @@ $(function Initialise() {
         source: numOfFlights
         });
 
-    departureAirportEL.autocomplete({
+   /* departureAirportEL.autocomplete({
             source: departureAirportAutocomplete
           });
 
     arrivalAirportEL.autocomplete({
         source: arrivalAirportAutocomplete
-      });
+      });*/
 
     getFromLocalStorage();
 

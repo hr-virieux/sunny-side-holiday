@@ -21,6 +21,23 @@ var StoredAirportData = [];
 //var AirportData = {};
 
 /*********************** EVENT HANDLERS****************************************** */
+//event handler for user autocomplete in departure airport
+departureAirportEL.on('keydown',function () {
+    var text = departureAirportEL.val();
+    //apifetch_NearestAirport(text, $('#departureAirport-check'));
+    apifetch_NearestAirport(text, departureAirportEL);
+
+});
+
+//event handler for user autocomplete in departure airport
+arrivalAirportEL.on('keydown',function () {
+    var text = arrivalAirportEL.val();
+    //apifetch_NearestAirport(text, $('#arrivalAirport-check'));
+    apifetch_NearestAirport(text, arrivalAirportEL);
+
+
+});
+
 $(
     UserSearchInputEL.on("submit", userSearch)
 
@@ -55,13 +72,13 @@ function userSearch() {
         departureAirportCode = formData.departureAirport.split('-')[0];
     }
     else {
-        apifetch_NearestAirport(formData.departureAirport, $('#departureAirport-check'));
+        //apifetch_NearestAirport(formData.departureAirport, $('#departureAirport-check'));
     }
     if (formData.arrivalAirport.charAt(3) == '-') {
         arrivalAirportCode = formData.arrivalAirport.split('-')[0];
         apifetch_WeatherData_fromIATA(arrivalAirportCode);
     } else {
-        apifetch_NearestAirport(formData.arrivalAirport, $('#arrivalAirport-check'));
+        //apifetch_NearestAirport(formData.arrivalAirport, $('#arrivalAirport-check'));
     }
 
     if (formData.flightNumber) {
@@ -120,8 +137,10 @@ function apifetch_NearestAirport(name, HtmlElement) {
         }).then(function (data) {
             //***TODO**** - remove console log when finished!!!
             console.log('Nearest Airport', data); // Log the API data
-            //***TODO**** - Can we make this an auto complete or links to select airport!!!
-            Array2HtmlUnorderedList(getAirportNamesArr(data), HtmlElement);
+            //Array2HtmlUnorderedList(getAirportNamesArr(data), HtmlElement);
+            HtmlElement.autocomplete({
+                source: getAirportNamesArr(data)
+              });
         }).catch(function (err) {
             console.log('Unable to connect to api.api-ninjas.com', err); // Log any errors
         });

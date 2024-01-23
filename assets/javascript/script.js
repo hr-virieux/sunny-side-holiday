@@ -223,7 +223,7 @@ function apifetch_WeatherData_fromIATA(IATA) {
             console.log('weather Airport', data); // Log the API data
             //***TODO**** - Can we make this an auto complete or links to select airport!!!
             //fetch weather Data
-            var weatherApiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + data[0].latitude + '&longitude=' + data[0].longitude + '&hourly=temperature_2m&daily=weather_code,temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,precipitation_probability_max,wind_speed_10m_max&timeformat=unixtime';
+            var weatherApiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=' + data[0].latitude + '&longitude=' + data[0].longitude + '&daily=temperature_2m_max,temperature_2m_min,uv_index_max,precipitation_sum,wind_speed_10m_max&timeformat=unixtime&forecast_days=16'
 
             if (OPENMETEO_LIVEDATA_ENABLE) {
                 fetch(weatherApiUrl, {
@@ -309,16 +309,35 @@ function getCoordsFromIATAcode(iata) {
 //output - Future 5 days  forcast -
 function processWeatherData(data) {
     var arr = [];
+    /*if(dayjs($('#FlightInfo-ArrivalTime').val).isValid())
+    {
+        var startDate = dayjs($('#FlightInfo-ArrivalTime').val);
+    }
+    else */
+    console.log($('#departureDate').val());
+    if((dayjs($('#departureDate').val(),'YY-MM-DD')).isValid())
+    {
+        var startDate = dayjs($('#departureDate').val(),'YY-MM-DD');
+    }
+    else
+    {
+        var startDate = dayjs();
+    }
+
+
     for (var j = 0; j < data.daily.time.length; j++) {
+        if(dayjs.unix(data.daily.time[j]).isBetween(startDate, startDate.add(4, 'day'), 'day', '[]'))//date within required time
+        {
         var dayData = {
             Date: dayjs.unix(data.daily.time[j]).format('DD/MM/YY'),
-            Temperature: data.daily.temperature_2m_max[j] + "°C",
+            Temperature: data.daily.temperature_2m_min[j] + "°C / " + data.daily.temperature_2m_max[j] + "°C",
             Wind: data.daily.wind_speed_10m_max[j] + " m/s",
             Rain: data.daily.precipitation_sum[j] + " mm"
         };
         arr.push(dayData);
     }
     jsObject2HtmlTable(arr, WeatherDataOutputEL);
+    }
 }
 
 
@@ -509,5 +528,4 @@ $(function Initialise() {
     //apifetch_WeatherData();
 
 })
-
 

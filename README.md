@@ -33,10 +33,6 @@ Sunny Side Holiday Planner is an interactive web application designed to assist 
 - **Mark:** Responsible for API implementation and JavaScript coding. [GitHub](https://github.com/mlewis89)
 - **Henry:** Responsible for Tailwind implementation. HTML and CSS coding. [GitHub](https://github.com/hr-virieux)
 
-## Acknowledgements
-
-APIs and libraries...
-
 ## License
 
 This project is licensed under the MIT License - see the LICENSE.md file for details.

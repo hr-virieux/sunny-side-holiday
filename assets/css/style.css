@@ -136,18 +136,14 @@ input[type="submit"]:focus {
 #flightInfoOutput,
 #weatherInfoOutput {
     max-height: 500px;
-    /* Adjust the height as needed */
     overflow-y: auto;
-    /* Enable vertical scrolling */
     margin-bottom: 20px;
-    /* Space between boxes */
 }
 
 /* Table Object Styling*/
 #JsObjectTable {
     width: 100%;
     border-collapse: collapse;
-    /* Table borders */
     margin-top: 20px;
 }
 

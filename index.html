@@ -69,26 +69,6 @@
     <section class="output-section py-6">
         <!-- Flight Offers Output Box -->
         <div id="flightInfoOffers" class="mx-auto p-4 border border-gray-300 rounded my-4 max-w-md">
-
-            <h2 class="text-lg font-semibold" id="center">Available Flights</h2>
-            <form action="#" id="fm-numofFlights">
-                <label for="numOfFlights" class="block text-sm font-medium">Choose how many flights to display:</label>
-                <select class="border border-gray-300 rounded p-2 w-full" name="numOfFlights"
-                    id="js-numOfFlightOffersToDisplay">
-                    <option>1</option>
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option selected="selected">5</option>
-                    <option>10</option>
-                    <option>15</option>
-                    <option>20</option>
-                </select>
-            </form>
-            <div id="js-flightOfferData"><!-- Flight data will be inserted here --></div>
-
-
-=======
             <div class="flight-offers-header">
                 <h2 class="text-lg font-semibold">Available Flights:</h2>
                 <div class="flight-display-control">
@@ -108,36 +88,25 @@
                 </div>
             </div>
             <div id="js-flightOfferData"><!-- Flight data will be inserted here --></div>
-
         </div>
         <!-- Flight Information Output Box -->
         <div id="flightInfoOutput" class="mx-auto p-4 border border-gray-300 rounded my-4 max-w-md">
-            <h2 class="text-lg font-semibold" id="center">Flight Details by Flight Number</h2>
-
-            <div class="flight-box" id="js-flightData1">
-                <div class="text-lg font-semibold" id="center"> Departure Airport </div>
-                <div>
-                    <div id='FlightInfo-DepartureAirport'>Departure Airport: </div>
-                    <div id='FlightInfo-DepatureTime'> Departure Time: </div>
-                    <div id='FlightInfo-FlightNumber'>Flight Number: </div>
-                </div>
-            </div>
-
-            <div class="flight-box" id="js-flightData2">
-                <div class="text-lg font-semibold" id="center"> Arrival Airport </div>
-                <div>
-                    <div id='FlightInfo-ArrivalAirport'>Arrival Airport: </div>
-                    <div id='FlightInfo-ArrivalTime'>Arrival Time: </div>
-                    <div id='FlightInfo-FlightDuration'>Flight Duration: </div>
-                    <div id='FlightInfo-AircraftType'>Aircraft Type: </div>
-                </div>
+            <h2 class="text-lg font-semibold">Flight Details by Flight Number</h2>
+            <div id="js-flightData">
+                <div id=FlightInfo-FlightNumber></div>
+                <div id='FlightInfo-DepatureTime'></div>
+                <div id='FlightInfo-ArrivalTime'></div>
+                <div id='FlightInfo-FlightDuration'></div>
+                <div id='FlightInfo-AircraftType'></div>
+                <div id='FlightInfo-ArrivalAirport'></div>
+                <div id='FlightInfo-DepartureAirport'></div>
             </div>
 
         </div>
 
         <!-- Weather Information Output Box -->
         <div id="weatherInfoOutput" class="mx-auto p-4 border border-gray-300 rounded my-4 max-w-md">
-            <h2 class="text-lg font-semibold" id="center">Arriving Destination Weather Details</h2>
+            <h2 class="text-lg font-semibold">Arriving Destination Weather Details</h2>
             <div id="js-weatherData"><!-- Weather data will be inserted here --></div>
 
         </div>

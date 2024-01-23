@@ -10,6 +10,11 @@
     background-color: white;
 }
 
+.ui-autocomplete {
+    background-color: white;
+}
+
+
 /* Resetting default settings for navigation */
 .navbar,
 .navbar ul,

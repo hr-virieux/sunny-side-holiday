@@ -29,9 +29,9 @@ Sunny Side Holiday Planner is an interactive web application designed to assist 
 
 ## Team Members
 
-- **Faiza:** Responsible for... [GitHub](https://github.com/Faiza1st)
-- **Mark:** Responsible for... [GitHub](https://github.com/mlewis89)
-- **Henry:** Responsible for Tailwind implementation. HTML and CSS styling [GitHub](https://github.com/hr-virieux)
+- **Faiza:** Responsible for HTML, CSS and JavaScript coding. UI design. [GitHub](https://github.com/Faiza1st)
+- **Mark:** Responsible for API implementation and JavaScript coding. [GitHub](https://github.com/mlewis89)
+- **Henry:** Responsible for Tailwind implementation. HTML and CSS styling. [GitHub](https://github.com/hr-virieux)
 
 ## Acknowledgements
 
